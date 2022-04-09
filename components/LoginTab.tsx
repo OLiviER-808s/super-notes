@@ -1,4 +1,4 @@
-import { Button, Center, Group, Input, PasswordInput, Title } from "@mantine/core"
+import { Button, Center, Group, PasswordInput, TextInput, Title } from "@mantine/core"
 import { IconAt, IconLock } from "@tabler/icons"
 
 const LoginTab = () => {
@@ -9,7 +9,7 @@ const LoginTab = () => {
         <Title order={3}>Login</Title>
       </Center>
 
-      <Input icon={<IconAt />} variant="filled" placeholder="Email"/>
+      <TextInput icon={<IconAt />} variant="filled" placeholder="Email"/>
 
       <PasswordInput icon={<IconLock />} variant="filled" placeholder="Password" />
 
