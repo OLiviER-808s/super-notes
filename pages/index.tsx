@@ -1,9 +1,12 @@
+import { Paper } from '@mantine/core'
 import type { NextPage } from 'next'
 
 const Home: NextPage = () => {
   return (
-    <div>
-      
+    <div className='page_center'>
+      <Paper shadow="md" p="md" withBorder>
+        hi
+      </Paper>
     </div>
   )
 }
