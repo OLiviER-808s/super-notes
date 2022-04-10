@@ -22,8 +22,4 @@ export const storage = getStorage();
 export const googleProvider = new GoogleAuthProvider()
 
 export const timestamp = () => serverTimestamp()
-export const fromMillis = (millis: number) => Timestamp.fromMillis(millis) 
-
-export const noteToJSON = (data: any) => {
-  return { ...data, createdAt: data.createdAt.toMillis() }
-}
+export const fromMillis = (millis: number) => Timestamp.fromMillis(millis)

@@ -44,7 +44,7 @@ const AddNote = () => {
     <>
       <Modal opened={opened} onClose={closeModal} title="Create A New Note">
         <form className="form" onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput placeholder="Note title" label="Title" 
+          <TextInput placeholder="Note title" label="Title" autoFocus 
           {...form.getInputProps('title')}/>
 
           <Group position="center" spacing="xl">

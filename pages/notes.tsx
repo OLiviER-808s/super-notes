@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
 import Toolbar from "../components/Toolbar";
-import { auth, db, noteToJSON } from "../lib/firebase";
+import { auth, db } from "../lib/firebase";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
@@ -17,7 +17,7 @@ const Notes: NextPage = () => {
 
       onSnapshot(q, (snap) => {
         setNotes(snap.docs.map(doc => {
-          return { ...noteToJSON(doc.data()), id: doc.id }
+          return { ...doc.data(), id: doc.id }
         }))
       })
     }
