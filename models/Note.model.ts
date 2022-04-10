@@ -1,4 +1,4 @@
-export default interface Note {
+export default interface NoteModel {
   title?: string;
   content?: string;
   photo?: string;
@@ -8,4 +8,5 @@ export default interface Note {
   createdAt?: any;
   uid?: string;
   id?: string;
+  color?: string;
 }

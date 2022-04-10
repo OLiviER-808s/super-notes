@@ -4,7 +4,7 @@ import { IconMusic, IconNote, IconPhoto } from "@tabler/icons"
 import { useState } from "react"
 import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
-import Note from "../models/Note.model"
+import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
 
 const AddNote = () => {
@@ -20,7 +20,7 @@ const AddNote = () => {
 
   const handleSubmit = async () => {
     if (form.values.title || form.values.content) {
-      const note: Note = {
+      const note: NoteModel = {
         title: form.values.title,
         content: form.values.content,
         pinned: false,
