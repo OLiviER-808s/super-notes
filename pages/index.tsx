@@ -1,5 +1,5 @@
-import { ActionIcon, Button, Divider, Group, Paper, Tabs } from '@mantine/core'
-import { IconBrandGithub, IconMoon } from '@tabler/icons'
+import { ActionIcon, Button, Divider, Group, Paper, Tabs, useMantineColorScheme } from '@mantine/core'
+import { IconBrandGithub, IconMoonStars, IconSun } from '@tabler/icons'
 import { signInWithPopup } from 'firebase/auth'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
@@ -9,6 +9,9 @@ import { auth, googleProvider } from '../lib/firebase'
 
 const Home: NextPage = () => {
   const router = useRouter()
+
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const dark = colorScheme === 'dark'
 
   const loginWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider)
@@ -39,8 +42,8 @@ const Home: NextPage = () => {
         <Divider my="sm" />
 
         <Group spacing="xs">
-          <ActionIcon size="sm">
-            <IconMoon />
+          <ActionIcon size="sm" onClick={() => toggleColorScheme()}>
+            {dark ? <IconSun /> : <IconMoonStars />}
           </ActionIcon>
 
           <ActionIcon size="sm">
