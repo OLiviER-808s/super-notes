@@ -26,7 +26,7 @@ const LoginTab = () => {
 
       await signInWithEmailAndPassword(auth, form.values.email, form.values.password)
 
-      router.push('/home')
+      router.push('/notes')
     } catch (error) {
       setError('Email or Password is incorrect')
     }
@@ -41,10 +41,12 @@ const LoginTab = () => {
         <Title order={3}>Login</Title>
       </Center>
 
-      <TextInput icon={<IconAt />} variant="filled" placeholder="Email" 
+      <TextInput icon={<IconAt />} variant="filled" placeholder="Your email" 
+      label="Email" required
       {...form.getInputProps('email')}/>
 
-      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Password"
+      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Your password"
+      label="Password" required
       {...form.getInputProps('password')} />
 
       {error && (

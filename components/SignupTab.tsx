@@ -29,7 +29,7 @@ const SignupTab = () => {
 
     await createUserWithEmailAndPassword(auth, form.values.email, form.values.password)
 
-    router.push('/home')
+    router.push('/notes')
     setLoading(false)
   }
 
@@ -41,13 +41,16 @@ const SignupTab = () => {
         <Title order={3}>Create Account</Title>
       </Center>
 
-      <TextInput icon={<IconAt />} variant="filled" placeholder="Email" 
+      <TextInput icon={<IconAt />} variant="filled" placeholder="Your email" 
+      label="Email" required
       {...form.getInputProps('email')}/>
 
-      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Password" 
+      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Your password" 
+      label="Password" required
       {...form.getInputProps('password')}/>
 
-      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Confirm Password" 
+      <PasswordInput icon={<IconLock />} variant="filled" placeholder="Confirm your password" 
+      label="Confirm Password" required
       {...form.getInputProps('passwordConfirm')}/>
 
       <Group position="center">
