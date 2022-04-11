@@ -3,7 +3,7 @@ import { useForm } from "@mantine/form"
 import { useHover } from "@mantine/hooks"
 import { IconCheck, IconPalette, IconPinned, IconPinnedOff, IconTrash, IconX } from "@tabler/icons"
 import { useContext, useState } from "react"
-import { SelectedNotesContext, SelectNote } from "../lib/SelectNoteProvider"
+import { SelectedNotesContext, SelectNoteContext } from "../lib/SelectNoteProvider"
 import NoteModel from "../models/Note.model"
 
 const Note = ({ note }: any) => {
@@ -18,7 +18,7 @@ const Note = ({ note }: any) => {
   })
 
   const selectedNotes = useContext(SelectedNotesContext)
-  const setSelectedNotes = useContext(SelectNote)
+  const setSelectedNotes = useContext(SelectNoteContext)
   const selected = selectedNotes.includes(note)
 
   const toggleSelect = () => selected 
@@ -37,7 +37,7 @@ const Note = ({ note }: any) => {
           <TextInput placeholder="Title" 
           {...form.getInputProps('title')}/>
 
-          <Textarea placeholder="Content" minRows={8} maxRows={18}
+          <Textarea placeholder="Content" minRows={8} autosize maxRows={18}
           {...form.getInputProps('content')}/>
 
           <Group position="right" spacing="xs" style={{'margin': '0'}}>
