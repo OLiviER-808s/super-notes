@@ -5,6 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
+import SelectNoteProvider from "../lib/SelectNoteProvider";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
@@ -24,11 +25,13 @@ const Notes: NextPage = () => {
   }, [user])
 
   return (
-    <div>
-      <Toolbar />
+    <SelectNoteProvider>
+      <div>
+        <Toolbar />
 
-      <NoteFeed notes={notes} />
-    </div>
+        <NoteFeed notes={notes} />
+      </div>
+    </SelectNoteProvider>
   )
 }
 

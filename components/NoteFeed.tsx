@@ -9,8 +9,7 @@ const NoteFeed = ({ notes }: any) => {
 
   const breakpointConfig = {
     default: width ? Math.floor(width / 280) : 5,
-    700: 2,
-    500: 1
+    700: 2
   }
 
   return (
