@@ -1,7 +1,6 @@
 import { Center } from "@mantine/core"
 import { useElementSize } from "@mantine/hooks"
 import Masonry from "react-masonry-css"
-import NoteModel from "../models/Note.model"
 import Note from "./Note"
 
 const NoteFeed = ({ notes }: any) => {
@@ -16,7 +15,7 @@ const NoteFeed = ({ notes }: any) => {
     <Center ref={ref}>
       <Masonry breakpointCols={breakpointConfig} 
       className="my-masonry-grid" columnClassName="my-masonry-grid_column">
-        {notes.map((note: NoteModel) => {
+        {notes.map((note: any) => {
           return (
             <div key={note.id}>
               <Note note={note} />

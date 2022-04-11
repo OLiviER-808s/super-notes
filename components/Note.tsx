@@ -19,7 +19,7 @@ const Note = ({ note }: any) => {
 
   const selectedNotes = useContext(SelectedNotesContext)
   const setSelectedNotes = useContext(SelectNoteContext)
-  const selected = selectedNotes.includes(note)
+  const selected = selectedNotes.includes(note) 
 
   const toggleSelect = () => selected 
   ? setSelectedNotes(selectedNotes.filter((n: NoteModel) => n !== note))

@@ -5,6 +5,7 @@ import { deleteNotes } from "../lib/auth"
 import { SelectedNotesContext, SelectNoteContext } from "../lib/SelectNoteProvider"
 import NoteModel from "../models/Note.model"
 import AddNote from "./AddNote"
+import ColorPopover from "./ColorPopover"
 
 const Toolbar = () => {
   const selectedNotes: NoteModel[] = useContext(SelectedNotesContext)
@@ -31,15 +32,21 @@ const Toolbar = () => {
                 <ActionIcon size="xl" variant="light" onClick={() => setSelectedNotes([])}>
                   <IconX />
                 </ActionIcon>
+
                 <ActionIcon color="blue" size="xl" variant="light">
                   <IconFolderPlus />
                 </ActionIcon>
-                <ActionIcon color="orange" size="xl" variant="light">
-                  <IconPalette />
-                </ActionIcon>
+                
+                <ColorPopover notes={selectedNotes} setNotes={setSelectedNotes}>
+                  <ActionIcon color="orange" size="xl" variant="light">
+                    <IconPalette />
+                  </ActionIcon>
+                </ColorPopover>
+
                 <ActionIcon size="xl" variant="light">
                   <IconPinned />
                 </ActionIcon>
+
                 <ActionIcon size="xl" variant="light" color="red" onClick={deleteSelected}>
                   <IconTrash />
                 </ActionIcon>
