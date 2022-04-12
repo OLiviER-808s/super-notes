@@ -2,18 +2,24 @@ import { ActionIcon, Center, Group } from "@mantine/core"
 import { IconFolderPlus, IconPalette, IconPinned, IconSettings, IconTrash, IconX } from "@tabler/icons"
 import { useContext } from "react"
 import { deleteNotes } from "../lib/auth"
-import { SelectedNotesContext, SelectNoteContext } from "../lib/SelectNoteProvider"
+import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 import AddNote from "./AddNote"
 import ColorPopover from "./ColorPopover"
 
 const Toolbar = () => {
-  const selectedNotes: NoteModel[] = useContext(SelectedNotesContext)
-  const setSelectedNotes = useContext(SelectNoteContext)
+  const notes: NoteModel[] = useContext(NotesContext)
+  const setNotes = useContext(SetNotesContext)
+
+  const selectedNotes = notes.filter((note: NoteModel) => note.selected)
 
   const deleteSelected = () => {
     deleteNotes(selectedNotes)
-    setSelectedNotes([])
+    deselectAll()
+  }
+
+  const deselectAll = () => {
+    setNotes(notes.map((note: NoteModel) => ({ ...note, selected: false })))
   }
 
   return (
@@ -29,7 +35,7 @@ const Toolbar = () => {
 
             {selectedNotes.length > 0 && (
               <>
-                <ActionIcon size="xl" variant="light" onClick={() => setSelectedNotes([])}>
+                <ActionIcon size="xl" variant="light" onClick={deselectAll}>
                   <IconX />
                 </ActionIcon>
 
@@ -37,7 +43,7 @@ const Toolbar = () => {
                   <IconFolderPlus />
                 </ActionIcon>
                 
-                <ColorPopover notes={selectedNotes} setNotes={setSelectedNotes}>
+                <ColorPopover notes={notes} setNotes={setNotes}>
                   <ActionIcon color="orange" size="xl" variant="light">
                     <IconPalette />
                   </ActionIcon>

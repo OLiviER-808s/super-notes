@@ -9,4 +9,5 @@ export default interface NoteModel {
   uid?: string;
   id?: string;
   color?: string;
+  selected?: boolean;
 }

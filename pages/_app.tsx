@@ -2,6 +2,7 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ColorScheme, ColorSchemeProvider, Global, MantineProvider } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
+import NoteListProvider from '../lib/NoteProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -28,7 +29,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         })} />
 
-        <Component {...pageProps} />
+        <NoteListProvider>
+          <Component {...pageProps} />
+        </NoteListProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )

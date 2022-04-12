@@ -1,15 +1,16 @@
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
-import SelectNoteProvider from "../lib/SelectNoteProvider";
+import NoteListProvider, { NotesContext, SetNotesContext } from "../lib/NoteProvider";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
-  const [notes, setNotes] = useState<any>([])
+  const setNotes = useContext(SetNotesContext)
+  const notes = useContext(NotesContext)
 
   useEffect(() => {
     if (user) {
@@ -18,20 +19,18 @@ const Notes: NextPage = () => {
 
       onSnapshot(q, (snap) => {
         setNotes(snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id }
+          return { ...doc.data(), id: doc.id, selected: false }
         }))
       })
     }
   }, [user])
 
   return (
-    <SelectNoteProvider>
-      <div>
-        <Toolbar />
+    <div>
+      <Toolbar />
 
-        <NoteFeed notes={notes} />
-      </div>
-    </SelectNoteProvider>
+      <NoteFeed notes={notes} />
+    </div>
   )
 }
 

@@ -11,7 +11,7 @@ const NoteFeed = ({ notes }: any) => {
     700: 2
   }
 
-  return (
+  return notes && (
     <Center ref={ref}>
       <Masonry breakpointCols={breakpointConfig} 
       className="my-masonry-grid" columnClassName="my-masonry-grid_column">
