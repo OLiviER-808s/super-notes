@@ -12,7 +12,7 @@ const NoteFeed = ({ notes }: any) => {
   }
 
   return notes && (
-    <Center ref={ref}>
+    <Center ref={ref} style={{'marginBottom': '1em'}}>
       <Masonry breakpointCols={breakpointConfig} 
       className="my-masonry-grid" columnClassName="my-masonry-grid_column">
         {notes.map((note: any) => {

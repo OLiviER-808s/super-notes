@@ -6,6 +6,7 @@ import NoteFeed from "../components/NoteFeed";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
 import NoteListProvider, { NotesContext, SetNotesContext } from "../lib/NoteProvider";
+import NoteModel from "../models/Note.model";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
@@ -29,7 +30,8 @@ const Notes: NextPage = () => {
     <div>
       <Toolbar />
 
-      <NoteFeed notes={notes} />
+      <NoteFeed notes={notes.filter((n: NoteModel) => n.pinned)} />
+      <NoteFeed notes={notes.filter((n: NoteModel) => !n.pinned)} />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import { ActionIcon, Center, Group } from "@mantine/core"
 import { IconFolderPlus, IconPalette, IconPinned, IconSettings, IconTrash, IconX } from "@tabler/icons"
 import { useContext } from "react"
-import { deleteNotes } from "../lib/auth"
+import { deleteNotes, pinNotes } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 import AddNote from "./AddNote"
@@ -15,6 +15,11 @@ const Toolbar = () => {
 
   const deleteSelected = () => {
     deleteNotes(selectedNotes)
+    deselectAll()
+  }
+
+  const pinSelected = () => {
+    pinNotes(selectedNotes)
     deselectAll()
   }
 
@@ -49,7 +54,7 @@ const Toolbar = () => {
                   </ActionIcon>
                 </ColorPopover>
 
-                <ActionIcon size="xl" variant="light">
+                <ActionIcon size="xl" variant="light" onClick={pinSelected}>
                   <IconPinned />
                 </ActionIcon>
 
