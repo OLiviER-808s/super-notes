@@ -1,4 +1,4 @@
-import { doc, writeBatch } from "firebase/firestore"
+import { doc, setDoc, writeBatch } from "firebase/firestore"
 import NoteModel from "../models/Note.model"
 import { db } from "./firebase"
 
@@ -44,4 +44,11 @@ export const addNotesToFolder = async (notes: NoteModel[], path: string) => {
   })
 
   await batch.commit()
+}
+
+export const editNote = async (note: NoteModel) => {
+  const ref = doc(db, `notes/${note.id}`)
+  delete note.id
+
+  await setDoc(ref, note)
 }

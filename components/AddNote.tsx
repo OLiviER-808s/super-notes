@@ -56,7 +56,6 @@ const AddNote = () => {
           {...form.getInputProps('content')}/>
 
           <Group position="right" style={{'margin': '0'}}>
-            <Button variant="light" onClick={closeModal}>Cancel</Button>
             <Button color="green" type="submit">Add Note</Button>
           </Group>
         </form>

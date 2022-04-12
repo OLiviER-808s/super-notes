@@ -1,8 +1,9 @@
-import { ActionIcon, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { ActionIcon, Button, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useHover } from "@mantine/hooks"
-import { IconCheck, IconPalette, IconPinned, IconPinnedOff, IconTrash, IconX } from "@tabler/icons"
+import { IconCheck, IconX } from "@tabler/icons"
 import { useContext, useState } from "react"
+import { editNote } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 
@@ -32,26 +33,27 @@ const Note = ({ note }: any) => {
     else toggleSelect()
   }
 
+  const handleEdit = () => {
+    if (form.values.title !== note.title || form.values.content !== note.content) {
+      const data = { ...note, title: form.values.title, content: form.values.content }
+
+      editNote(data)
+    }
+    setOpened(false)
+  }
+
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
       <Modal opened={opened} onClose={() => setOpened(false)} title="Note">
-        <form className="form">
-          <TextInput placeholder="Title" 
+        <form className="form" onSubmit={form.onSubmit(handleEdit)}>
+          <TextInput placeholder="Title" autoFocus 
           {...form.getInputProps('title')}/>
 
           <Textarea placeholder="Content" minRows={8} autosize maxRows={18}
           {...form.getInputProps('content')}/>
 
-          <Group position="right" spacing="xs" style={{'margin': '0'}}>
-            <ActionIcon>
-              {note.pinned ? <IconPinnedOff /> : <IconPinned />}
-            </ActionIcon>
-            <ActionIcon size="sm">
-              <IconPalette />
-            </ActionIcon>
-            <ActionIcon color="red" size="sm">
-              <IconTrash />
-            </ActionIcon>
+          <Group position="right" style={{'margin': 0}}>
+            <Button color="green" type="submit">Edit</Button>
           </Group>
         </form>
       </Modal>
@@ -67,15 +69,6 @@ const Note = ({ note }: any) => {
           <Group position="right" spacing="xs">
             <ActionIcon color="blue" size="sm" variant="filled" onClick={toggleSelect}>
               {note.selected ? <IconX /> : <IconCheck />}
-            </ActionIcon>
-            <ActionIcon>
-              {note.pinned ? <IconPinnedOff /> : <IconPinned />}
-            </ActionIcon>
-            <ActionIcon size="sm">
-              <IconPalette />
-            </ActionIcon>
-            <ActionIcon color="red" size="sm">
-              <IconTrash />
             </ActionIcon>
           </Group>
         )}
