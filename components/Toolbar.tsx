@@ -4,6 +4,7 @@ import { useContext } from "react"
 import { deleteNotes, pinNotes } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
+import AddFolder from "./AddFolder"
 import AddNote from "./AddNote"
 import ColorPopover from "./ColorPopover"
 
@@ -35,6 +36,7 @@ const Toolbar = () => {
             {selectedNotes.length === 0 && (
               <>
                 <AddNote />
+                <AddFolder />
               </>
             )}
 

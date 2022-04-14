@@ -1,8 +1,7 @@
 import { ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
-import { useContext, useState } from "react"
+import { useState } from "react"
 import { changeNoteColors } from "../lib/auth"
 import { removeDuplicates } from "../lib/helpers"
-import { NotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 
 const ColorPopover = ({ children, notes, setNotes }: any) => {
@@ -13,8 +12,8 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
 
   const changeColor = (e: string) => {
     if (e && notes) {
-      let color: any = e.slice(0, 3) + 'a(' + e.slice(4, e.length - 1) + ', 0.6)'
-      if (e === '#1a1b1e' || e === '#ffffff') color = ''
+      let color: any = e.slice(0, 3) + 'a(' + e.slice(4, e.length - 1) + ', 0.4)'
+      if (e === 'rgb(26,27,30)' || e === 'rgb(255,255,255)') color = ''
     
       setNotes(notes.map((note: NoteModel) => {
         if (note.selected) return { ...note, color: color }

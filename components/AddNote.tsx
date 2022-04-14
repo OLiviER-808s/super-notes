@@ -1,15 +1,18 @@
 import { Button, Group, Modal, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconMusic, IconNote, IconPhoto } from "@tabler/icons"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
+import { PathContext } from "../lib/PathProvider"
 
 const AddNote = () => {
   const [opened, setOpened] = useState(false)
+
   const [user] = useAuthState(auth)
+  const path = useContext(PathContext)
 
   const form = useForm({
     initialValues: {
@@ -25,7 +28,8 @@ const AddNote = () => {
         content: form.values.content,
         pinned: false,
         createdAt: timestamp(),
-        uid: user?.uid
+        uid: user?.uid,
+        path: path
       }
 
       const ref = collection(db, 'notes')

@@ -5,23 +5,36 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
-import NoteListProvider, { NotesContext, SetNotesContext } from "../lib/NoteProvider";
+import { NotesContext, SetNotesContext } from "../lib/NoteProvider";
 import NoteModel from "../models/Note.model";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
+
   const setNotes = useContext(SetNotesContext)
   const notes = useContext(NotesContext)
 
+  const [folders, setFolders] = useState<Array<any>>([])
+
   useEffect(() => {
     if (user) {
-      const ref = collection(db, 'notes')
-      const q = query(ref, where('uid', '==', user.uid), orderBy('createdAt', 'desc'))
+      const noteRef = collection(db, 'notes')
+      const noteQuery = query(noteRef, where('uid', '==', user.uid), orderBy('createdAt', 'desc'))
 
-      onSnapshot(q, (snap) => {
+      onSnapshot(noteQuery, (snap) => {
         setNotes(snap.docs.map(doc => {
           return { ...doc.data(), id: doc.id, selected: false }
         }))
+      })
+
+      const folderRef = collection(db, 'folders')
+      const folderQuery = query(folderRef, where('uid', '==', user.uid), orderBy('createdAt', 'desc'))
+
+      onSnapshot(folderQuery, (snap) => {
+        setFolders(snap.docs.map(doc => {
+          return { ...doc.data(), id: doc.id }
+        }))
+        console.log(folders)
       })
     }
   }, [user])
@@ -30,8 +43,8 @@ const Notes: NextPage = () => {
     <div>
       <Toolbar />
 
-      <NoteFeed notes={notes.filter((n: NoteModel) => n.pinned)} />
-      <NoteFeed notes={notes.filter((n: NoteModel) => !n.pinned)} />
+      <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
+      <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
     </div>
   )
 }

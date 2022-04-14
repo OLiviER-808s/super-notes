@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import { ColorScheme, ColorSchemeProvider, Global, MantineProvider } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import NoteListProvider from '../lib/NoteProvider'
+import PathProvider from '../lib/PathProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -29,9 +30,11 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         })} />
 
+        <PathProvider>
         <NoteListProvider>
           <Component {...pageProps} />
         </NoteListProvider>
+        </PathProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )
