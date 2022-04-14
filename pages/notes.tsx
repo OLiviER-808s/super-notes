@@ -3,6 +3,7 @@ import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
+import PathTracker from "../components/PathTracker";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider";
@@ -42,6 +43,7 @@ const Notes: NextPage = () => {
   return (
     <div>
       <Toolbar />
+      <PathTracker />
 
       <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
       <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
