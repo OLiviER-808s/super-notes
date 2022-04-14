@@ -7,6 +7,7 @@ import PathTracker from "../components/PathTracker";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider";
+import { PathContext } from "../lib/PathProvider";
 import NoteModel from "../models/Note.model";
 
 const Notes: NextPage = () => {
@@ -16,11 +17,13 @@ const Notes: NextPage = () => {
   const notes = useContext(NotesContext)
 
   const [folders, setFolders] = useState<Array<any>>([])
+  const path = useContext(PathContext)
 
   useEffect(() => {
     if (user) {
       const noteRef = collection(db, 'notes')
-      const noteQuery = query(noteRef, where('uid', '==', user.uid), orderBy('createdAt', 'desc'))
+      const noteQuery = query(noteRef, where('uid', '==', user.uid), where('path', '==', path),
+      orderBy('createdAt', 'desc'))
 
       onSnapshot(noteQuery, (snap) => {
         setNotes(snap.docs.map(doc => {
@@ -29,16 +32,16 @@ const Notes: NextPage = () => {
       })
 
       const folderRef = collection(db, 'folders')
-      const folderQuery = query(folderRef, where('uid', '==', user.uid), orderBy('createdAt', 'desc'))
+      const folderQuery = query(folderRef, where('uid', '==', user.uid), where('path', '==', path),
+      orderBy('createdAt', 'desc'))
 
       onSnapshot(folderQuery, (snap) => {
         setFolders(snap.docs.map(doc => {
           return { ...doc.data(), id: doc.id }
         }))
-        console.log(folders)
       })
     }
-  }, [user])
+  }, [user, path])
 
   return (
     <div>
