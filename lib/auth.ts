@@ -1,4 +1,5 @@
-import { doc, setDoc, writeBatch } from "firebase/firestore"
+import { deleteDoc, doc, setDoc, writeBatch } from "firebase/firestore"
+import FolderModel from "../models/Folder.model"
 import NoteModel from "../models/Note.model"
 import { db } from "./firebase"
 
@@ -51,4 +52,10 @@ export const editNote = async (note: NoteModel) => {
   delete note.id
 
   await setDoc(ref, note)
+}
+
+export const deleteFolder = async (id: string) => {
+  const ref = doc(db, `folders/${id}`)
+
+  await deleteDoc(ref)
 }
