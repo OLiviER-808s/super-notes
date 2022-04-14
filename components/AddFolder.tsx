@@ -1,7 +1,7 @@
-import { ActionIcon, Button, Group, Modal, TextInput } from "@mantine/core"
+import { ActionIcon, Alert, Button, Group, Modal, TextInput } from "@mantine/core"
 import { useInputState } from "@mantine/hooks"
-import { IconFolderPlus } from "@tabler/icons"
-import { addDoc, collection } from "firebase/firestore"
+import { IconAlertCircle, IconFolderPlus } from "@tabler/icons"
+import { addDoc, collection, doc, getDocs, query, where } from "firebase/firestore"
 import { useContext, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db, timestamp } from "../lib/firebase"
@@ -14,6 +14,8 @@ const AddFolder = () => {
   const path = useContext(PathContext)
   const [user] = useAuthState(auth)
 
+  const [error, setError] = useState(false)
+
   const handleSubmit = async () => {
     if (name) {
       const data = {
@@ -24,14 +26,27 @@ const AddFolder = () => {
       }
       const ref = collection(db, 'folders')
 
-      await addDoc(ref, data)
+      // checks to see if folder with that name already exists
+      const q = query(ref, where('path', '==', path), where('name', '==', name))
+      const empty = (await getDocs(q)).empty
+
+      if (empty) {
+        addDoc(ref, data)
+        setOpened(false)
+      }
+      else setError(true)
     }
-    setOpened(false)
   }
 
   return (
     <>
       <Modal opened={opened} onClose={() => setOpened(false)} title="Add Folder">
+        {error && (
+          <Alert icon={<IconAlertCircle size={16} />} title="Oops..." color="red">
+            Looks like you already have a folder with that name in this directory.
+          </Alert>
+        )}
+
         <form className="form" onSubmit={(e) => e.preventDefault()}>
           <TextInput label="Name" placeholder="Folder Name" autoFocus 
           value={name} onChange={setName}/>
