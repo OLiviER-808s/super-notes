@@ -24,7 +24,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <Global styles={(theme) => ({
           body: {
             ...theme.fn.fontStyles(),
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[3],
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
             color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
             lineHeight: theme.lineHeight
           }

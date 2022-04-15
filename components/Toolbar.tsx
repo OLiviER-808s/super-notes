@@ -7,6 +7,7 @@ import NoteModel from "../models/Note.model"
 import AddFolder from "./AddFolder"
 import AddNote from "./AddNote"
 import ColorPopover from "./ColorPopover"
+import SettingsMenu from "./SettingsMenu"
 
 const Toolbar = () => {
   const notes: NoteModel[] = useContext(NotesContext)
@@ -68,9 +69,7 @@ const Toolbar = () => {
 
             <div className="spacer"></div>
 
-            <ActionIcon size="xl">
-              <IconSettings />
-            </ActionIcon>
+            <SettingsMenu />
           </Group>
         </div>
       </Center>
