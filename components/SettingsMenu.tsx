@@ -22,10 +22,13 @@ const SettingsMenu = () => {
             <Kbd>Ctrl</Kbd> + <Kbd>A</Kbd> Select All
           </ListItem>
           <ListItem>
-            <Kbd>Ctrl</Kbd> + <Kbd>N</Kbd> Add Note
+            <Kbd>Ctrl</Kbd> + <Kbd>D</Kbd> Deselect All
           </ListItem>
           <ListItem>
-            <Kbd>Ctrl</Kbd> + <Kbd>F</Kbd> Add Folder
+            <Kbd>Shift</Kbd> + <Kbd>N</Kbd> Add Note
+          </ListItem>
+          <ListItem>
+            <Kbd>Shift</Kbd> + <Kbd>F</Kbd> Add Folder
           </ListItem>
         </List>
       </Modal>

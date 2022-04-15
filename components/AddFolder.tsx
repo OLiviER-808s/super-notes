@@ -1,5 +1,5 @@
 import { ActionIcon, Alert, Button, Group, Modal, TextInput } from "@mantine/core"
-import { useInputState } from "@mantine/hooks"
+import { useHotkeys, useInputState } from "@mantine/hooks"
 import { IconAlertCircle, IconFolderPlus } from "@tabler/icons"
 import { addDoc, collection, doc, getDocs, query, where } from "firebase/firestore"
 import { useContext, useState } from "react"
@@ -15,6 +15,8 @@ const AddFolder = () => {
   const [user] = useAuthState(auth)
 
   const [error, setError] = useState(false)
+
+  useHotkeys([['shift+f', () => setOpened(true)]])
 
   const handleSubmit = async () => {
     if (name) {

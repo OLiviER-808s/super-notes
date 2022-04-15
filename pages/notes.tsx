@@ -1,3 +1,4 @@
+import { useHotkeys } from "@mantine/hooks";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { NextPage } from "next";
 import { useContext, useEffect, useState } from "react";
@@ -42,6 +43,11 @@ const Notes: NextPage = () => {
       })
     }
   }, [user, path])
+
+  useHotkeys([
+    ['mod+a', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: true })))],
+    ['mod+d', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: false })))]
+  ])
 
   return (
     <div>

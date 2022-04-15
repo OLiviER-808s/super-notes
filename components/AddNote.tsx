@@ -7,6 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
 import { PathContext } from "../lib/PathProvider"
+import { useHotkeys } from "@mantine/hooks"
 
 const AddNote = () => {
   const [opened, setOpened] = useState(false)
@@ -20,6 +21,8 @@ const AddNote = () => {
       content: ''
     }
   })
+
+  useHotkeys([['shift+n', () => setOpened(true)]])
 
   const handleSubmit = async () => {
     if (form.values.title || form.values.content) {
