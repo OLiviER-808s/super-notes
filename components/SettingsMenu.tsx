@@ -1,7 +1,11 @@
 import { ActionIcon, Kbd, List, ListItem, Menu, Modal, useMantineColorScheme } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconKeyboard, IconLogout, IconMoonStars, IconSettings, IconSun, IconTrashX } from "@tabler/icons"
+import { deleteUser, signOut } from "firebase/auth"
+import { useRouter } from "next/router"
 import { useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { auth } from "../lib/firebase"
 
 const SettingsMenu = () => {
   const [opened, handlers] = useDisclosure(false)
@@ -10,6 +14,21 @@ const SettingsMenu = () => {
   const dark = colorScheme === 'dark'
 
   const [hotkeysModal, setHotkeysModal] = useState(false)
+
+  const router = useRouter()
+  const [user]: any = useAuthState(auth)
+
+  const logout = async () => {
+    await signOut(auth)
+    router.push('/')
+  }
+
+  const deleteAccount = async () => {
+    // deletes user in auth
+    await deleteUser(user)
+
+    router.push('/')
+  }
 
   return (
     <>
@@ -48,11 +67,11 @@ const SettingsMenu = () => {
           Show Hotkeys
         </Menu.Item>
 
-        <Menu.Item icon={<IconLogout size={16} />}>
+        <Menu.Item icon={<IconLogout size={16} />} onClick={logout}>
           Logout
         </Menu.Item>
 
-        <Menu.Item color="red" icon={<IconTrashX size={16} />}>
+        <Menu.Item color="red" icon={<IconTrashX size={16} />} onClick={deleteAccount}>
           Delete Account
         </Menu.Item>
       </Menu>
