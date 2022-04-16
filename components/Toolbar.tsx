@@ -6,6 +6,7 @@ import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 import AddFolder from "./AddFolder"
 import AddNote from "./AddNote"
+import AddToFolder from "./AddToFolder"
 import ColorPopover from "./ColorPopover"
 import SettingsMenu from "./SettingsMenu"
 
@@ -47,9 +48,7 @@ const Toolbar = () => {
                   <IconX />
                 </ActionIcon>
 
-                <ActionIcon color="blue" size="xl" variant="light">
-                  <IconFolderPlus />
-                </ActionIcon>
+                <AddToFolder />
                 
                 <ColorPopover notes={notes} setNotes={setNotes}>
                   <ActionIcon color="orange" size="xl" variant="light">

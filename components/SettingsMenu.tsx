@@ -52,7 +52,7 @@ const SettingsMenu = () => {
         </List>
       </Modal>
 
-      <Menu control={
+      <Menu shadow="lg" control={
         <ActionIcon size="xl">
           <IconSettings />
         </ActionIcon>
