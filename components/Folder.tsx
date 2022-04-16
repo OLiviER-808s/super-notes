@@ -1,5 +1,5 @@
-import { ActionIcon, Button, Group, Modal, Paper, Radio, RadioGroup, Stack, Text, Title } from "@mantine/core"
-import { useHover, useInputState } from "@mantine/hooks"
+import { ActionIcon, Button, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core"
+import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconFolder, IconTrash } from "@tabler/icons"
 import { useContext, useState } from "react"
 import { deleteFolder } from "../lib/auth"
@@ -10,8 +10,7 @@ const Folder = ({ folder }: any) => {
   const [opened, setOpened] = useState(false)
 
   const { ref, hovered } = useHover()
-
-  const [keepContent, setKeepContent] = useInputState('')
+  const { width } = useViewportSize()
 
   const handleDelete = (e: any) => {
     e.preventDefault()
@@ -39,7 +38,8 @@ const Folder = ({ folder }: any) => {
 
           <Title order={4}>{ folder.name }</Title>
         </Stack>
-        {hovered && (
+        
+        {(hovered || width < 800) && (
           <Group position="right">
             <ActionIcon color="red" size="sm" onClick={() => setOpened(true)}>
               <IconTrash />

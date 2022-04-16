@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useHover } from "@mantine/hooks"
+import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconX } from "@tabler/icons"
 import { useContext, useState } from "react"
 import { editNote } from "../lib/auth"
@@ -10,6 +10,7 @@ import NoteModel from "../models/Note.model"
 const Note = ({ note }: any) => {
   const [opened, setOpened] = useState(false)
   const { hovered, ref } = useHover()
+  const { width } = useViewportSize()
 
   const form = useForm({
     initialValues: {
@@ -65,7 +66,7 @@ const Note = ({ note }: any) => {
           <Text lineClamp={12}>{ note.content }</Text>
         </div>
         
-        {hovered && (
+        {(hovered || width < 800) && (
           <Group position="right" spacing="xs">
             <ActionIcon color="blue" size="sm" variant="filled" onClick={toggleSelect}>
               {note.selected ? <IconX /> : <IconCheck />}
