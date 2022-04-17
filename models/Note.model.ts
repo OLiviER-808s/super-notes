@@ -1,8 +1,10 @@
 export default interface NoteModel {
   title?: string;
   content?: string;
-  photo?: string;
-  audio?: string;
+  audioRef?: any;
+  imageRef?: any;
+  audioPath?: any;
+  imagePath?: any;
   path?: string;
   pinned?: boolean;
   createdAt?: any;

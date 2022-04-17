@@ -1,7 +1,8 @@
 import { deleteDoc, doc, setDoc, writeBatch } from "firebase/firestore"
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import FolderModel from "../models/Folder.model"
 import NoteModel from "../models/Note.model"
-import { db } from "./firebase"
+import { db, storage, timestamp } from "./firebase"
 
 export const deleteNotes = async (notes: NoteModel[]) => {
   const batch = writeBatch(db)
@@ -58,4 +59,15 @@ export const deleteFolder = async (id: string) => {
   const ref = doc(db, `folders/${id}`)
 
   await deleteDoc(ref)
+}
+
+export const uploadImage = async (file: File) => {
+  const imagePath = `images/${timestamp()}_${file.name}`
+
+  const r = ref(storage, imagePath)
+  await uploadBytes(r, file)
+
+  const imageRef = await getDownloadURL(r)
+
+  return { imagePath, imageRef }
 }

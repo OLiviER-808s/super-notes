@@ -1,19 +1,24 @@
 import { Button, Group, Modal, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { IconMusic, IconNote, IconPhoto } from "@tabler/icons"
-import { useContext, useState } from "react"
+import { IconMusic, IconNote, IconPhoto, IconX } from "@tabler/icons"
+import { useContext, useRef, useState } from "react"
 import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
 import { PathContext } from "../lib/PathProvider"
 import { useHotkeys } from "@mantine/hooks"
+import { uploadImage } from "../lib/auth"
 
 const AddNote = () => {
   const [opened, setOpened] = useState(false)
+  const ref: any = useRef(null) 
 
   const [user] = useAuthState(auth)
   const path = useContext(PathContext)
+
+  const [image, setImage]: any = useState('')
+  const [imageFile, setImageFile]: any = useState(null)
 
   const form = useForm({
     initialValues: {
@@ -24,15 +29,30 @@ const AddNote = () => {
 
   useHotkeys([['shift+n', () => setOpened(true)]])
 
+  const addImage = async (e: any) => {
+    const file: File = e.target.files[0]
+
+    if (file) {
+      const reader = new FileReader()
+      reader.addEventListener('loadend', (e) => setImage(e.target?.result))
+      reader.readAsDataURL(file)
+      setImageFile(file)
+    }
+  }
+
   const handleSubmit = async () => {
     if (form.values.title || form.values.content) {
+      const { imagePath, imageRef } = imageFile ? await uploadImage(imageFile) : { imageRef: null, imagePath: null }
+
       const note: NoteModel = {
         title: form.values.title,
         content: form.values.content,
         pinned: false,
         createdAt: timestamp(),
         uid: user?.uid,
-        path: path
+        path: path,
+        imagePath: imagePath,
+        imageRef: imageRef
       }
 
       const ref = collection(db, 'notes')
@@ -54,8 +74,23 @@ const AddNote = () => {
           <TextInput placeholder="Note title" label="Title" autoFocus 
           {...form.getInputProps('title')}/>
 
+          <input type="file" hidden ref={ref} onChange={addImage}/>
+
+          {image && <img style={{'maxWidth': '100%'}} src={image}/>}
+
           <Group position="center" spacing="xl">
-            <Button variant="outline" radius="xl" size="xs" leftIcon={<IconPhoto />}>Add Image</Button>
+            {!image ? (
+              <Button variant="outline" radius="xl" size="xs" 
+              onClick={() => ref.current.click()}
+              leftIcon={<IconPhoto />}
+              >Add Image</Button>
+            ) : (
+              <Button variant="outline" radius="xl" size="xs"
+              onClick={() => setImage('')}
+              leftIcon={<IconX />}
+              >Remove Image</Button>
+            )}
+
             <Button variant="outline" radius="xl" size="xs" color="orange" leftIcon={<IconMusic />}>Add Audio</Button>
           </Group>
 

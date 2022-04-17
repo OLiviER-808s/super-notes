@@ -8,12 +8,12 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
   const [opened, setOpened] = useState(false)
   
   const { colorScheme } = useMantineColorScheme()
-  const mainColor = colorScheme === 'dark' ? '#1a1b1e' : '#ffffff'
+  const mainColor = colorScheme === 'dark' ? 'rgb(26,27,30)' : 'rgb(255,255,255)'
 
   const changeColor = (e: string) => {
     if (e && notes) {
       let color: any = e.slice(0, 3) + 'a(' + e.slice(4, e.length - 1) + ', 0.4)'
-      if (e === 'rgb(26,27,30)' || e === 'rgb(255,255,255)') color = ''
+      if (e === 'rgb(26,27,30)' || e === 'rgb(255,255,255)') color = null
     
       setNotes(notes.map((note: NoteModel) => {
         if (note.selected) return { ...note, color: color }
