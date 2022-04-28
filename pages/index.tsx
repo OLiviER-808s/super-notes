@@ -3,12 +3,15 @@ import { IconBrandGithub, IconMoonStars, IconSun } from '@tabler/icons'
 import { signInWithPopup } from 'firebase/auth'
 import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+import { useAuthState } from 'react-firebase-hooks/auth'
 import LoginTab from '../components/LoginTab'
 import SignupTab from '../components/SignupTab'
 import { auth, googleProvider } from '../lib/firebase'
 
 const Home: NextPage = () => {
   const router = useRouter()
+  const [user] = useAuthState(auth)
 
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   const dark = colorScheme === 'dark'
@@ -17,6 +20,10 @@ const Home: NextPage = () => {
     await signInWithPopup(auth, googleProvider)
     router.push('/home')
   }
+
+  useEffect(() => {
+    if (user) router.push('/notes')
+  }, [user])
 
   return (
     <div className='column'>

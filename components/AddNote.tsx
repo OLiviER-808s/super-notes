@@ -97,6 +97,10 @@ const AddNote = () => {
               leftIcon={<IconX />}
               >Remove Image</Button>
             )}
+
+            <Button variant="outline" radius="xl" size="xs"
+            leftIcon={<IconMusic />} color="orange"
+            >Add Audio</Button>
           </Group>
 
           <Textarea 
