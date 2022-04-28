@@ -1,4 +1,4 @@
-import { Button, Group, Modal, Textarea, TextInput } from "@mantine/core"
+import { Button, Group, LoadingOverlay, Modal, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconMusic, IconNote, IconPhoto, IconX } from "@tabler/icons"
 import { useContext, useRef, useState } from "react"
@@ -19,6 +19,8 @@ const AddNote = () => {
 
   const [image, setImage]: any = useState('')
   const [imageFile, setImageFile]: any = useState(null)
+
+  const [loading, setLoading] = useState(false)
 
   const form = useForm({
     initialValues: {
@@ -42,6 +44,8 @@ const AddNote = () => {
 
   const handleSubmit = async () => {
     if (form.values.title || form.values.content) {
+      setLoading(true)
+
       const { imagePath, imageRef } = imageFile ? await uploadImage(imageFile) : { imageRef: null, imagePath: null }
 
       const note: NoteModel = {
@@ -59,6 +63,7 @@ const AddNote = () => {
       addDoc(ref, note)
 
       closeModal()
+      setLoading(false)
     }
   }
 
@@ -69,7 +74,9 @@ const AddNote = () => {
 
   return (
     <>
-      <Modal opened={opened} onClose={closeModal} title="Create A New Note">
+      <Modal overflow="inside" opened={opened} onClose={closeModal} title="Create A New Note">
+        <LoadingOverlay visible={loading} />
+
         <form className="form" onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput placeholder="Note title" label="Title" autoFocus 
           {...form.getInputProps('title')}/>
@@ -92,7 +99,12 @@ const AddNote = () => {
             )}
           </Group>
 
-          <Textarea autosize minRows={5} placeholder="Your Content" label="Content"
+          <Textarea 
+          data-autofocus
+          autosize 
+          minRows={5} 
+          placeholder="Your Content" 
+          label="Content"
           {...form.getInputProps('content')}/>
 
           <Group position="right" style={{'margin': '0'}}>

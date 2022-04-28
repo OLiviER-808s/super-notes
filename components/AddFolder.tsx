@@ -1,4 +1,4 @@
-import { ActionIcon, Alert, Button, Group, Modal, TextInput } from "@mantine/core"
+import { ActionIcon, Alert, Button, Group, LoadingOverlay, Modal, TextInput } from "@mantine/core"
 import { useHotkeys, useInputState } from "@mantine/hooks"
 import { IconAlertCircle, IconFolderPlus } from "@tabler/icons"
 import { addDoc, collection, doc, getDocs, query, where } from "firebase/firestore"
@@ -15,11 +15,14 @@ const AddFolder = () => {
   const [user] = useAuthState(auth)
 
   const [error, setError] = useState(false)
+  const [loading, setLoading] = useState(false)
 
   useHotkeys([['shift+f', () => setOpened(true)]])
 
   const handleSubmit = async () => {
     if (name) {
+      setLoading(true)
+
       const data = {
         path: path,
         name: name,
@@ -35,8 +38,12 @@ const AddFolder = () => {
       if (empty) {
         addDoc(ref, data)
         setOpened(false)
+        setLoading(false)
       }
-      else setError(true)
+      else {
+        setError(true)
+        setLoading(false)
+      }
     }
   }
 
@@ -49,9 +56,16 @@ const AddFolder = () => {
           </Alert>
         )}
 
+        <LoadingOverlay visible={loading} />
+
         <form className="form" onSubmit={(e) => e.preventDefault()}>
-          <TextInput label="Name" placeholder="Folder Name" autoFocus 
-          value={name} onChange={setName}/>
+          <TextInput 
+          label="Name" 
+          placeholder="Folder Name"
+          autoFocus 
+          data-autofocus
+          value={name} 
+          onChange={setName}/>
 
           <Group position="right" style={{'margin': '0'}}>
             <Button color="green" onClick={handleSubmit}>Add Folder</Button>
