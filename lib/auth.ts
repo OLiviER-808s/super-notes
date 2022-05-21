@@ -67,7 +67,18 @@ export const uploadImage = async (file: File) => {
   const r = ref(storage, imagePath)
   await uploadBytes(r, file)
 
-  const imageRef = await getDownloadURL(r)
+  const imageUrl = await getDownloadURL(r)
 
-  return { imagePath, imageRef }
+  return { imagePath, imageUrl }
+}
+
+export const uploadAudio = async (file: File) => {
+  const audioPath = `audio/${timestamp()}_${file.name}`
+
+  const r = ref(storage, audioPath)
+  await uploadBytes(r, file)
+
+  const audioUrl = await getDownloadURL(r)
+
+  return { audioPath, audioUrl }
 }

@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { ActionIcon, Button, Center, Code, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconX } from "@tabler/icons"
@@ -62,6 +62,14 @@ const Note = ({ note }: any) => {
       <Paper shadow="xs" radius="md" p="md" withBorder
       style={{'backgroundColor': note.color || null}}>
         {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
+
+        {note.audioRef && (
+          <Center>
+            <audio controls src={note.audioRef}>
+              Your browser does not support the <Code>audio</Code> element.
+            </audio>
+          </Center>
+        )}
 
         <div onClick={clickNote}>
           <Title order={4}>{ note.title }</Title>

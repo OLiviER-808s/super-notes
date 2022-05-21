@@ -18,7 +18,7 @@ const Home: NextPage = () => {
 
   const loginWithGoogle = async () => {
     await signInWithPopup(auth, googleProvider)
-    router.push('/home')
+    router.push('/notes')
   }
 
   useEffect(() => {
