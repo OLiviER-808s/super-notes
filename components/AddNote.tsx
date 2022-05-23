@@ -88,6 +88,8 @@ const AddNote = () => {
   const closeModal = () => {
     setOpened(false)
     form.reset()
+    setImage(null)
+    setAudio(null)
   }
 
   return (

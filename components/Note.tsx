@@ -1,9 +1,9 @@
-import { ActionIcon, Button, Center, Code, Group, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { useHover, useViewportSize } from "@mantine/hooks"
-import { IconCheck, IconX } from "@tabler/icons"
-import { useContext, useState } from "react"
-import { editNote } from "../lib/auth"
+import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
+import { useContext, useRef, useState } from "react"
+import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
 
@@ -11,6 +11,17 @@ const Note = ({ note }: any) => {
   const [opened, setOpened] = useState(false)
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
+
+  const imageRef: any = useRef(null)
+  const audioRef: any = useRef(null)
+
+  const [image, setImage]: any = useState(note.imageRef || null)
+  const [imageFile, setImageFile]: any = useState(null)
+
+  const [audio, setAudio]: any = useState(note.audioRef || null)
+  const [audioFile, setAudioFile]: any = useState(null)
+
+  const [loading, setLoading] = useState(false)
 
   const form = useForm({
     initialValues: {
@@ -34,21 +45,107 @@ const Note = ({ note }: any) => {
     else toggleSelect()
   }
 
-  const handleEdit = () => {
-    if (form.values.title !== note.title || form.values.content !== note.content) {
-      const data = { ...note, title: form.values.title, content: form.values.content }
+  const addImage = async (e: any) => {
+    const file: File = e.target.files[0]
+
+    if (file) {
+      const reader = new FileReader()
+      reader.addEventListener('loadend', (e) => setImage(e.target?.result))
+      reader.readAsDataURL(file)
+      setImageFile(file)
+    }
+  }
+
+  const addAudio = async (e: any) => {
+    const file: File = e.target.files[0]
+
+    if (file) {
+      const reader = new FileReader()
+      reader.addEventListener('loadend', (e) => setAudio(e.target?.result))
+      reader.readAsDataURL(file)
+      setAudioFile(file)
+    }
+  }
+
+  const handleEdit = async () => {
+    const newData: NoteModel = { 
+      ...note, 
+      title: form.values.title, 
+      content: form.values.content,
+      imageRef: image,
+      audioRef: audio
+    }
+
+    if (newData !== note) {
+      setLoading(true)
+
+      const { imagePath, imageUrl } = image && image !== note.imageRef ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
+      const { audioPath, audioUrl } = audio && audio !== note.imageRef ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
+
+      const data: NoteModel = {
+        ...note,
+        title: form.values.title, 
+        content: form.values.content,
+        imagePath: imagePath || image ? note.imagePath : null,
+        imageRef: imageUrl || image ? note.imageRef : null,
+        audioPath: audioPath || audio ? note.audioPath : null,
+        audioRef: audioUrl || audio ? note.audioRef : null
+      }
 
       editNote(data)
     }
+
     setOpened(false)
+    setLoading(false)
   }
 
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Note">
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="inside">
+        <LoadingOverlay visible={loading} />
+
         <form className="form" onSubmit={form.onSubmit(handleEdit)}>
           <TextInput placeholder="Title" autoFocus 
           {...form.getInputProps('title')}/>
+
+          <input type="file" hidden ref={imageRef} onChange={addImage} />
+          <input type="file" hidden ref={audioRef} onChange={addAudio} />
+
+          {image && <img style={{'maxWidth': '100%'}} src={image}/>}
+
+          {audio && (
+            <Center>
+              <audio controls src={audio}>
+                Your browser does not support the <Code>audio</Code> element.
+              </audio>
+            </Center>
+          )}
+
+          <Group position="center" spacing="xl">
+            {!image ? (
+              <Button variant="outline" radius="xl" size="xs" 
+              onClick={() => imageRef.current.click()}
+              leftIcon={<IconPhoto />}
+              >Add Image</Button>
+            ) : (
+              <Button variant="outline" radius="xl" size="xs"
+              onClick={() => setImage(null)}
+              leftIcon={<IconX />}
+              >Remove Image</Button>
+            )}
+
+            {!audio ? (
+              <Button variant="outline" radius="xl" size="xs"
+              leftIcon={<IconMusic />} color="orange"
+              onClick={() => audioRef.current.click()}
+              >Add Audio</Button>
+            ) : (
+              <Button variant="outline" radius="xl" size="xs"
+              onClick={() => setAudio(null)} color="orange"
+              leftIcon={<IconX />}
+              >Remove Audio</Button>
+            )}
+          </Group>
 
           <Textarea placeholder="Content" minRows={8} autosize maxRows={18}
           {...form.getInputProps('content')}/>
