@@ -4,6 +4,7 @@ import type { NextPage } from 'next'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
+import About from '../components/About'
 import LoginTab from '../components/LoginTab'
 import SignupTab from '../components/SignupTab'
 import { auth, googleProvider } from '../lib/firebase'
@@ -32,7 +33,7 @@ const Home: NextPage = () => {
       <Paper shadow="md" p="md" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
         <Tabs tabPadding="md">
           <Tabs.Tab label="About">
-            hello world
+            <About />
           </Tabs.Tab>
           <Tabs.Tab label="Signup">
             <SignupTab />
