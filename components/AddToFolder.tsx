@@ -33,6 +33,7 @@ const AddToFolder = () => {
       value: f.path ? `${f.path}/${f.name}` : f.name
     }
   })
+  const [selectedFolder, setSelectedFolder] = useState('')
 
   const [user] = useAuthState(auth)
 
@@ -53,16 +54,17 @@ const AddToFolder = () => {
     }
   }
 
-  const handleFolderMove = async (newPath: string) => {
-    if (newPath) {
+  const handleFolderMove = async () => {
+    if (selectedFolder) {
       const batch = writeBatch(db)
 
       selectedNotes.forEach((n: NoteModel) => {
         const ref = doc(db, `notes/${n.id}`)
-        batch.update(ref, { path: newPath })
+        batch.update(ref, { path: selectedFolder })
       })
 
       batch.commit()
+      
       setOpened(false)
     }
   }
@@ -73,17 +75,17 @@ const AddToFolder = () => {
 
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Add To Folder">
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Move To Folder">
         <div className="form">
           <Select 
-          onChange={handleFolderMove}
+          onChange={(path) => path ? setSelectedFolder(path) : null}
           itemComponent={SelectItem} 
           label="Add to folder" 
           placeholder="Pick a folder" 
           data={selectionData}/>
           
           <Group position="right" style={{'margin': '0'}}>
-            <Button color="green">Add</Button>
+            <Button color="green" onClick={handleFolderMove}>Add</Button>
           </Group>
         </div>
       </Modal>
