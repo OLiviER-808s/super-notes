@@ -37,10 +37,6 @@ const SignupTab = () => {
     <form className="form" onSubmit={form.onSubmit(handleSubmit)}>
       <LoadingOverlay visible={loading} />
 
-      <Center>
-        <Title order={3}>Create Account</Title>
-      </Center>
-
       <TextInput icon={<IconAt />} variant="filled" placeholder="Your email" 
       label="Email" required
       {...form.getInputProps('email')}/>
@@ -53,8 +49,8 @@ const SignupTab = () => {
       label="Confirm Password" required
       {...form.getInputProps('passwordConfirm')}/>
 
-      <Group position="center">
-        <Button color="green" type="submit">Enter</Button>
+      <Group position="right">
+        <Button color="green" type="submit">Create Account</Button>
       </Group>
     </form>
   )

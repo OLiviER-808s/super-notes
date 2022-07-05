@@ -37,10 +37,6 @@ const LoginTab = () => {
     <form className="form" onSubmit={form.onSubmit(handleSubmit)}>
       <LoadingOverlay visible={loading} />
 
-      <Center>
-        <Title order={3}>Login</Title>
-      </Center>
-
       <TextInput icon={<IconAt />} variant="filled" placeholder="Your email" 
       label="Email" required
       {...form.getInputProps('email')}/>
@@ -55,9 +51,9 @@ const LoginTab = () => {
         </Center>
       )}
 
-      <Group position="center">
-        <Button color="indigo" type="submit">Enter</Button>
+      <Group position="right">
         <Button variant="subtle" color="cyan">Forgot Password?</Button>
+        <Button color="indigo" type="submit">Login</Button>
       </Group>
     </form>
   )
