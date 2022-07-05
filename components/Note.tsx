@@ -158,19 +158,21 @@ const Note = ({ note }: any) => {
 
       <Paper shadow="xs" radius="md" p="md" withBorder
       style={{'backgroundColor': note.color || null}}>
-        {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
-
-        {note.audioRef && (
-          <Center>
-            <audio controls src={note.audioRef}>
-              Your browser does not support the <Code>audio</Code> element.
-            </audio>
-          </Center>
-        )}
-
         <div onClick={clickNote}>
-          <Title order={4}>{ note.title }</Title>
-          <Text lineClamp={12}>{ note.content }</Text>
+          {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
+
+          {note.audioRef && (
+            <Center>
+              <audio controls src={note.audioRef}>
+                Your browser does not support the <Code>audio</Code> element.
+              </audio>
+            </Center>
+          )}
+
+          <div>
+            <Title order={4}>{ note.title }</Title>
+            <Text lineClamp={12}>{ note.content }</Text>
+          </div>
         </div>
         
         {(hovered || width < 800) && (
