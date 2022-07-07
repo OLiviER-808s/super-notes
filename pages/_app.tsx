@@ -20,31 +20,28 @@ function MyApp({ Component, pageProps }: AppProps) {
   useHotkeys([['mod+J', () => toggleColorScheme()]])
 
   return (
-    <>
-      <Head>
-        <title>Notes Demo</title>
-        <link rel="icon" href="logo.png" />
-      </Head>
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider theme={{ colorScheme }} withGlobalStyles>
+        <Head>
+          <title>Notes Demo</title>
+        </Head>
 
-      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-          <Global styles={(theme) => ({
-            body: {
-              ...theme.fn.fontStyles(),
-              backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
-              color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-              lineHeight: theme.lineHeight
-            }
-          })} />
+        <Global styles={(theme) => ({
+          body: {
+            ...theme.fn.fontStyles(),
+            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
+            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+            lineHeight: theme.lineHeight
+          }
+        })} />
 
-          <PathProvider>
-            <NoteListProvider>
-              <Component {...pageProps} />
-            </NoteListProvider>
-          </PathProvider>
-        </MantineProvider>
-      </ColorSchemeProvider>
-    </>
+        <PathProvider>
+          <NoteListProvider>
+            <Component {...pageProps} />
+          </NoteListProvider>
+        </PathProvider>
+      </MantineProvider>
+    </ColorSchemeProvider>
   )
 }
 
