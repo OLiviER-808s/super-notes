@@ -4,6 +4,7 @@ import { ColorScheme, ColorSchemeProvider, Global, MantineProvider } from '@mant
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import NoteListProvider from '../lib/NoteProvider'
 import PathProvider from '../lib/PathProvider'
+import Head from 'next/head'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -19,24 +20,31 @@ function MyApp({ Component, pageProps }: AppProps) {
   useHotkeys([['mod+J', () => toggleColorScheme()]])
 
   return (
-    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-      <MantineProvider theme={{ colorScheme }} withGlobalStyles>
-        <Global styles={(theme) => ({
-          body: {
-            ...theme.fn.fontStyles(),
-            backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
-            color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
-            lineHeight: theme.lineHeight
-          }
-        })} />
+    <>
+      <Head>
+        <title>Notes Demo</title>
+        <link rel="icon" href="logo.png" />
+      </Head>
 
-        <PathProvider>
-        <NoteListProvider>
-          <Component {...pageProps} />
-        </NoteListProvider>
-        </PathProvider>
-      </MantineProvider>
-    </ColorSchemeProvider>
+      <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+        <MantineProvider theme={{ colorScheme }} withGlobalStyles>
+          <Global styles={(theme) => ({
+            body: {
+              ...theme.fn.fontStyles(),
+              backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[3],
+              color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
+              lineHeight: theme.lineHeight
+            }
+          })} />
+
+          <PathProvider>
+            <NoteListProvider>
+              <Component {...pageProps} />
+            </NoteListProvider>
+          </PathProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
+    </>
   )
 }
 

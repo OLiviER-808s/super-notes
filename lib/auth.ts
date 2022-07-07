@@ -1,6 +1,5 @@
 import { deleteDoc, doc, setDoc, writeBatch } from "firebase/firestore"
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
-import FolderModel from "../models/Folder.model"
 import NoteModel from "../models/Note.model"
 import { db, storage, timestamp } from "./firebase"
 

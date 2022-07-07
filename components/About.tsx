@@ -11,7 +11,7 @@ const About = () => {
 
   return (
     <div>
-      <Title order={3} style={{'marginBottom': '8px'}}>Welcome to my Next.js Notes Demo</Title>
+      <Title order={3} style={{'marginBottom': '8px'}}>Welcome to my Notes Demo</Title>
 
       <Text>
         This is a small notes app I made using Next.js and Firebase as a demo to put on my portfolio. <br />
