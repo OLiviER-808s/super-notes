@@ -94,7 +94,7 @@ const AddNote = () => {
 
   return (
     <>
-      <Modal overflow="inside" opened={opened} onClose={closeModal} title="Create A New Note">
+      <Modal overflow="outside" opened={opened} onClose={closeModal} title="Create A New Note">
         <LoadingOverlay visible={loading} />
 
         <form className="form" onSubmit={form.onSubmit(handleSubmit)}>

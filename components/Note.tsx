@@ -1,8 +1,9 @@
 import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useHover, useViewportSize } from "@mantine/hooks"
+import { useHover } from "@mantine/hooks"
 import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
 import { useContext, useRef, useState } from "react"
+import useLongPress from "../hooks/useLongPress"
 import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
@@ -10,7 +11,6 @@ import NoteModel from "../models/Note.model"
 const Note = ({ note }: any) => {
   const [opened, setOpened] = useState(false)
   const { hovered, ref } = useHover()
-  const { width } = useViewportSize()
 
   const imageRef: any = useRef(null)
   const audioRef: any = useRef(null)
@@ -78,18 +78,19 @@ const Note = ({ note }: any) => {
 
     if (newData !== note) {
       setLoading(true)
+      console.log(imageFile)
 
-      const { imagePath, imageUrl } = image && image !== note.imageRef ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
-      const { audioPath, audioUrl } = audio && audio !== note.imageRef ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
+      const { imagePath, imageUrl } = imageFile ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
+      const { audioPath, audioUrl } = audioFile ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
 
       const data: NoteModel = {
         ...note,
         title: form.values.title, 
         content: form.values.content,
-        imagePath: imagePath || image ? note.imagePath : null,
-        imageRef: imageUrl || image ? note.imageRef : null,
-        audioPath: audioPath || audio ? note.audioPath : null,
-        audioRef: audioUrl || audio ? note.audioRef : null
+        imagePath: imagePath || (image ? note.imagePath : null),
+        imageRef: imageUrl || (image ? note.imageRef : null),
+        audioPath: audioPath || (audio ? note.audioPath : null),
+        audioRef: audioUrl || (audio ? note.audioRef : null)
       }
 
       editNote(data)
@@ -99,9 +100,11 @@ const Note = ({ note }: any) => {
     setLoading(false)
   }
 
+  const longPressEvent = useLongPress(toggleSelect, clickNote)
+
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="inside">
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="outside">
         <LoadingOverlay visible={loading} />
 
         <form className="form" onSubmit={form.onSubmit(handleEdit)}>
@@ -158,7 +161,7 @@ const Note = ({ note }: any) => {
 
       <Paper shadow="xs" radius="md" p="md" withBorder
       style={{'backgroundColor': note.color || null}}>
-        <div onClick={clickNote}>
+        <div {...longPressEvent}>
           {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
           {note.audioRef && (
@@ -175,7 +178,7 @@ const Note = ({ note }: any) => {
           </div>
         </div>
         
-        {(hovered || width < 800) && (
+        {hovered && (
           <Group position="right" spacing="xs">
             <ActionIcon color="blue" size="sm" variant="filled" onClick={toggleSelect}>
               {note.selected ? <IconX /> : <IconCheck />}
