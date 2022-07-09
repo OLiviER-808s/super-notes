@@ -78,18 +78,19 @@ const Note = ({ note }: any) => {
 
     if (newData !== note) {
       setLoading(true)
+      console.log(imageFile)
 
-      const { imagePath, imageUrl } = image && image !== note.imageRef ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
-      const { audioPath, audioUrl } = audio && audio !== note.imageRef ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
+      const { imagePath, imageUrl } = imageFile ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
+      const { audioPath, audioUrl } = audioFile ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
 
       const data: NoteModel = {
         ...note,
         title: form.values.title, 
         content: form.values.content,
-        imagePath: imagePath || image ? note.imagePath : null,
-        imageRef: imageUrl || image ? note.imageRef : null,
-        audioPath: audioPath || audio ? note.audioPath : null,
-        audioRef: audioUrl || audio ? note.audioRef : null
+        imagePath: imagePath || (image ? note.imagePath : null),
+        imageRef: imageUrl || (image ? note.imageRef : null),
+        audioPath: audioPath || (audio ? note.audioPath : null),
+        audioRef: audioUrl || (audio ? note.audioRef : null)
       }
 
       editNote(data)
