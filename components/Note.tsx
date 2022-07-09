@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import { useHover, useViewportSize } from "@mantine/hooks"
+import { useHover } from "@mantine/hooks"
 import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
 import { useContext, useRef, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
@@ -11,7 +11,6 @@ import NoteModel from "../models/Note.model"
 const Note = ({ note }: any) => {
   const [opened, setOpened] = useState(false)
   const { hovered, ref } = useHover()
-  const { width } = useViewportSize()
 
   const imageRef: any = useRef(null)
   const audioRef: any = useRef(null)
@@ -101,11 +100,11 @@ const Note = ({ note }: any) => {
     setLoading(false)
   }
 
-  const longPressEvent = useLongPress(() => width < 800 ? toggleSelect() : null, clickNote)
+  const longPressEvent = useLongPress(toggleSelect, clickNote)
 
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="inside">
+      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="outside">
         <LoadingOverlay visible={loading} />
 
         <form className="form" onSubmit={form.onSubmit(handleEdit)}>
