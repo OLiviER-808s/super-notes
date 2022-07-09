@@ -3,6 +3,7 @@ import { useForm } from "@mantine/form"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
 import { useContext, useRef, useState } from "react"
+import useLongPress from "../hooks/useLongPress"
 import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
 import NoteModel from "../models/Note.model"
@@ -100,6 +101,8 @@ const Note = ({ note }: any) => {
     setLoading(false)
   }
 
+  const longPressEvent = useLongPress(() => width < 800 ? toggleSelect() : null, clickNote)
+
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
       <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="inside">
@@ -159,7 +162,7 @@ const Note = ({ note }: any) => {
 
       <Paper shadow="xs" radius="md" p="md" withBorder
       style={{'backgroundColor': note.color || null}}>
-        <div onClick={clickNote}>
+        <div {...longPressEvent}>
           {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
           {note.audioRef && (
@@ -176,7 +179,7 @@ const Note = ({ note }: any) => {
           </div>
         </div>
         
-        {(hovered || width < 800) && (
+        {hovered && (
           <Group position="right" spacing="xs">
             <ActionIcon color="blue" size="sm" variant="filled" onClick={toggleSelect}>
               {note.selected ? <IconX /> : <IconCheck />}
