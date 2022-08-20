@@ -1,5 +1,5 @@
 import { ActionIcon, Center, Group } from "@mantine/core"
-import { IconFolderPlus, IconPalette, IconPinned, IconSettings, IconTrash, IconX } from "@tabler/icons"
+import { IconPalette, IconPinned, IconTrash, IconX } from "@tabler/icons"
 import { useContext } from "react"
 import { deleteNotes, pinNotes } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../lib/NoteProvider"

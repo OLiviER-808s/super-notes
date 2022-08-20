@@ -32,7 +32,7 @@ const SettingsMenu = () => {
 
   return (
     <>
-      <Modal opened={hotkeysModal} onClose={() => setHotkeysModal(false)} title="Hotkeys">
+      <Modal opened={hotkeysModal} onClose={() => setHotkeysModal(false)} title="Shortcuts">
         <List size="sm" spacing="md">
           <ListItem>
             <Kbd>Ctrl</Kbd> + <Kbd>J</Kbd> Toggle Theme
@@ -64,7 +64,7 @@ const SettingsMenu = () => {
         </Menu.Item>
 
         <Menu.Item icon={<IconKeyboard size={16} />} onClick={() => setHotkeysModal(true)}>
-          Show Hotkeys
+          Shortcuts
         </Menu.Item>
 
         <Menu.Item icon={<IconLogout size={16} />} onClick={logout}>

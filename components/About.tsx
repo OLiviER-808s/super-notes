@@ -25,7 +25,7 @@ const About = () => {
         <Button 
         onClick={enterTestMode} 
         size="md" 
-        radius="lg" 
+        radius="md" 
         variant="gradient" 
         gradient={{ from: 'blue', to: 'teal', deg: 60 }}>
           Explore in Test Mode
