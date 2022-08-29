@@ -56,7 +56,7 @@ const Toolbar = () => {
                   </ActionIcon>
                 </ColorPopover>
 
-                <ActionIcon size="xl" variant="light" onClick={pinSelected}>
+                <ActionIcon color="violet" size="xl" variant="light" onClick={pinSelected}>
                   <IconPinned />
                 </ActionIcon>
 

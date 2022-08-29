@@ -1,5 +1,5 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
-import { IconArrowBigLeft, IconArrowBigRight } from "@tabler/icons"
+import { IconArrowBigLeft, IconArrowBigRight, IconFolderPlus, IconPalette, IconPinned, IconTrash } from "@tabler/icons"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 
@@ -19,35 +19,55 @@ const NoteViewer = ({ note }) => {
       <Center>
         <div style={{'width': '100%'}}>
           <Group position="center">
-            <ActionIcon color="blue" size="lg" variant="light">
+            <ActionIcon size="lg">
               <IconArrowBigLeft size={26} />
             </ActionIcon>
 
-            <Paper 
-            onClick={e => e.stopPropagation()}
-            shadow="xs" 
-            radius="md" 
-            p="md" 
-            withBorder 
-            style={{...getNoteColors(), 'maxWidth': '600px'}}>
-              {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
+            <div style={{'maxWidth': '600px'}}>
+              <Paper 
+              onClick={e => e.stopPropagation()}
+              shadow="xs" 
+              radius="md" 
+              p="md" 
+              withBorder 
+              style={getNoteColors()}>
+                {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
-              {note.audioRef && (
-                <Center>
-                  <audio controls src={note.audioRef}>
-                    Your browser does not support the <Code>audio</Code> element.
-                  </audio>
-                </Center>
-              )}
+                {note.audioRef && (
+                  <Center>
+                    <audio controls src={note.audioRef}>
+                      Your browser does not support the <Code>audio</Code> element.
+                    </audio>
+                  </Center>
+                )}
 
-              <div>
-                <Title order={4}>{ note.title }</Title>
-                <Text lineClamp={12}>{ note.content }</Text>
-              </div>
-            </Paper>
+                <div>
+                  <Title order={4}>{ note.title }</Title>
+                  <Text lineClamp={12}>{ note.content }</Text>
+                </div>
+              </Paper>
+            </div>
 
-            <ActionIcon color="blue" size="lg" variant="light">
+            <ActionIcon size="lg">
               <IconArrowBigRight size={26} />
+            </ActionIcon>
+          </Group>
+
+          <Group position="center" spacing="md" p="xl">
+            <ActionIcon color="blue" size="xl">
+              <IconFolderPlus />
+            </ActionIcon>
+
+            <ActionIcon color="orange" size="xl">
+              <IconPalette />
+            </ActionIcon>
+
+            <ActionIcon size="xl" color="violet">
+              <IconPinned />
+            </ActionIcon>
+
+            <ActionIcon size="xl" color="red">
+              <IconTrash />
             </ActionIcon>
           </Group>
         </div>
