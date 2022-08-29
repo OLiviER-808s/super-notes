@@ -1,5 +1,5 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
-import { IconArrowBigLeft, IconArrowBigRight, IconFolderPlus, IconPalette, IconPinned, IconTrash } from "@tabler/icons"
+import { IconArrowBigLeft, IconArrowBigRight, IconFolderPlus, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 
@@ -54,6 +54,10 @@ const NoteViewer = ({ note }) => {
           </Group>
 
           <Group position="center" spacing="md" p="xl">
+            <ActionIcon color="green" size="xl">
+              <IconPencil />
+            </ActionIcon>
+
             <ActionIcon color="blue" size="xl">
               <IconFolderPlus />
             </ActionIcon>
