@@ -32,7 +32,7 @@ const AddFolder = () => {
       const ref = collection(db, 'folders')
 
       // checks to see if folder with that name already exists
-      const q = query(ref, where('path', '==', path), where('name', '==', name))
+      const q = query(ref, where('path', '==', path), where('name', '==', name), where('uid', '==', user?.uid))
       const empty = (await getDocs(q)).empty
 
       if (empty) {
