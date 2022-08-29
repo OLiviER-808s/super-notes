@@ -1,5 +1,6 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
 import { IconArrowBigLeft, IconArrowBigRight } from "@tabler/icons"
+import { makeSolid } from "../lib/helpers"
 
 const NoteViewer = ({ note }) => {
   return (
@@ -17,7 +18,7 @@ const NoteViewer = ({ note }) => {
             radius="md" 
             p="md" 
             withBorder 
-            style={{'backgroundColor': note.color || null, 'maxWidth': '600px'}}>
+            style={{'backgroundColor': makeSolid(note.color) || '', 'maxWidth': '600px'}}>
               {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
               {note.audioRef && (
