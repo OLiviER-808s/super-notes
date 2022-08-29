@@ -7,8 +7,8 @@ import NoteFeed from "../components/NoteFeed";
 import PathTracker from "../components/PathTracker";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
-import { NotesContext, SetNotesContext } from "../lib/NoteProvider";
-import { PathContext } from "../lib/PathProvider";
+import { NotesContext, SetNotesContext } from "../providers/NoteProvider";
+import { PathContext } from "../providers/PathProvider";
 import NoteModel from "../models/Note.model";
 
 const Notes: NextPage = () => {

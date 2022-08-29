@@ -1,7 +1,7 @@
 import { Button, Center, Group } from "@mantine/core"
 import { IconArrowBigRight } from "@tabler/icons"
 import { useContext } from "react"
-import { PathContext, SetPathContext } from "../lib/PathProvider"
+import { PathContext, SetPathContext } from "../providers/PathProvider"
 
 const PathTracker = () => {
   const path: string = useContext(PathContext)

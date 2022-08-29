@@ -3,7 +3,7 @@ import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconFolder, IconTrash } from "@tabler/icons"
 import { useContext, useState } from "react"
 import { deleteFolder } from "../lib/auth"
-import { SetPathContext } from "../lib/PathProvider"
+import { SetPathContext } from "../providers/PathProvider"
 
 const Folder = ({ folder }: any) => {
   const setPath = useContext(SetPathContext)

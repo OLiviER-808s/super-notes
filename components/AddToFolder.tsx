@@ -4,7 +4,7 @@ import { collection, doc, getDocs, query, where, writeBatch } from "firebase/fir
 import { forwardRef, useContext, useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../lib/firebase"
-import { NotesContext } from "../lib/NoteProvider"
+import { NotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 
 const SelectItem = forwardRef<HTMLDivElement, any>(
