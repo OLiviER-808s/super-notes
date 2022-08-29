@@ -1,8 +1,19 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
 import { IconArrowBigLeft, IconArrowBigRight } from "@tabler/icons"
+import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 
 const NoteViewer = ({ note }) => {
+  const getNoteColors = () => {
+    if (note.color) {
+      const bgColor = makeSolid(note.color)
+      const textColor = contrast(bgColor, 'rgba(192, 193, 197)') > contrast(bgColor, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)'
+
+      return { backgroundColor: bgColor, color: textColor }
+    }
+    else return { }
+  }
+
   return (
     <Container p="xl">
       <Center>
@@ -18,7 +29,7 @@ const NoteViewer = ({ note }) => {
             radius="md" 
             p="md" 
             withBorder 
-            style={{'backgroundColor': makeSolid(note.color) || '', 'maxWidth': '600px'}}>
+            style={{...getNoteColors(), 'maxWidth': '600px'}}>
               {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
               {note.audioRef && (
