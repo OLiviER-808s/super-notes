@@ -5,6 +5,7 @@ import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 import NoteListProvider from '../lib/NoteProvider'
 import PathProvider from '../lib/PathProvider'
 import Head from 'next/head'
+import OverlayProvider from '../providers/OverlayProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -37,7 +38,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <PathProvider>
           <NoteListProvider>
-            <Component {...pageProps} />
+            <OverlayProvider>
+              <Component {...pageProps} />
+            </OverlayProvider>
           </NoteListProvider>
         </PathProvider>
       </MantineProvider>
