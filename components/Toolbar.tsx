@@ -9,12 +9,14 @@ import AddNote from "./AddNote"
 import AddToFolder from "./AddToFolder"
 import ColorPopover from "./ColorPopover"
 import SettingsMenu from "./SettingsMenu"
+import { useOverlay } from "../providers/OverlayProvider"
 
 const Toolbar = () => {
   const notes: NoteModel[] = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
   const selectedNotes = notes.filter((note: NoteModel) => note.selected)
+  const [ overlayOpen ] = useOverlay(null)
 
   const deleteSelected = () => {
     deleteNotes(selectedNotes)
@@ -35,14 +37,14 @@ const Toolbar = () => {
       <Center>
         <div style={{'maxWidth': '840px', 'width': '100%'}}>
           <Group spacing="xs">
-            {selectedNotes.length === 0 && (
+            {(selectedNotes.length === 0 || overlayOpen) && (
               <>
                 <AddNote />
                 <AddFolder />
               </>
             )}
 
-            {selectedNotes.length > 0 && (
+            {selectedNotes.length > 0 && !overlayOpen && (
               <>
                 <ActionIcon size="xl" variant="light" onClick={deselectAll}>
                   <IconX />

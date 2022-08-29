@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from "react";
 const OverlayContext = createContext<any>(null)
 const OverlaySetContext = createContext<any>(null)
 
-export const useOverlay = (children) => {
+export const useOverlay = (children): Array<any> => {
   const content = useContext(OverlayContext)
   const setContent = useContext(OverlaySetContext)
 
@@ -14,7 +14,7 @@ export const useOverlay = (children) => {
     else setContent(null)
   }
 
-  return { opened, setOpened }
+  return [ opened, setOpened ]
 }
 
 const OverlayProvider = ({ children }) => {

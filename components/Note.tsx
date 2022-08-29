@@ -2,7 +2,7 @@ import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, 
 import { useForm } from "@mantine/form"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
 import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
@@ -11,7 +11,7 @@ import { useOverlay } from "../providers/OverlayProvider"
 import NoteViewer from "./NoteViewer"
 
 const Note = ({ note }: any) => {
-  const { opened, setOpened } = useOverlay(<NoteViewer note={note} />)
+  const [ opened, setOpened ] = useOverlay(<NoteViewer note={note} />)
 
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
@@ -46,7 +46,7 @@ const Note = ({ note }: any) => {
 
   const clickNote = () => {
     if (notes.filter((n: NoteModel) => n.selected).length === 0) setOpened(true)
-    else toggleSelect()
+    toggleSelect()
   }
 
   const addImage = async (e: any) => {
@@ -105,6 +105,15 @@ const Note = ({ note }: any) => {
   }
 
   const longPressEvent = useLongPress(toggleSelect, clickNote)
+
+  useEffect(() => {
+    if (!opened) {
+      setNotes(notes.map((n: NoteModel) => {
+        if (n.id === note.id) return { ...note, selected: false }
+        else return n
+      }))
+    }
+  }, [opened])
 
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
