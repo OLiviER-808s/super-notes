@@ -3,9 +3,9 @@ import { IconArrowBigLeft, IconArrowBigRight } from "@tabler/icons"
 
 const NoteViewer = ({ note }) => {
   return (
-    <Container p="lg">
+    <Container p="xl">
       <Center>
-        <div style={{'width': '100%', 'maxWidth': '600px'}}>
+        <div style={{'width': '100%'}}>
           <Group position="center">
             <ActionIcon color="blue" size="lg" variant="light">
               <IconArrowBigLeft size={26} />
@@ -17,7 +17,7 @@ const NoteViewer = ({ note }) => {
             radius="md" 
             p="md" 
             withBorder 
-            style={{'backgroundColor': note.color || null}}>
+            style={{'backgroundColor': note.color || null, 'maxWidth': '600px'}}>
               {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
               {note.audioRef && (
