@@ -1,12 +1,16 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
+import { deleteNotes } from "../lib/auth"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
+import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
 
 const NoteViewer = ({ idx }) => {
+  const [ opened, setOpened ] = useOverlay(null)
+
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
@@ -22,6 +26,11 @@ const NoteViewer = ({ idx }) => {
     }
     else setColors({ })
   }, [note.color])
+
+  const deleteNote = () => {
+    deleteNotes([ note ])
+    setOpened(false)
+  }
 
   return (
     <Container p="xl" data-close-overlay>
@@ -77,7 +86,7 @@ const NoteViewer = ({ idx }) => {
               <IconPinned />
             </ActionIcon>
 
-            <ActionIcon size="xl" color="red" data-avoid-close>
+            <ActionIcon size="xl" color="red" onClick={deleteNote}>
               <IconTrash />
             </ActionIcon>
           </Group>
