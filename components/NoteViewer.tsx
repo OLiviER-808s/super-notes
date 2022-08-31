@@ -1,20 +1,20 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
-import { deleteNotes } from "../lib/auth"
+import { deleteNotes, pinNotes } from "../lib/auth"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
 
-const NoteViewer = (props) => {
+const NoteViewer = ({ id }) => {
   const [ opened, setOpened ] = useOverlay(null)
 
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
-  const [note, setNote] = useState(notes.filter(n => n.id === props.note.id)[0])
+  const note = notes.filter(n => n.id === id)[0]
   const idx = notes.indexOf(note)
 
   const [colors, setColors] = useState({})
@@ -32,6 +32,10 @@ const NoteViewer = (props) => {
   const deleteNote = () => {
     deleteNotes([ note ])
     setOpened(false)
+  }
+
+  const pinNote = () => {
+    pinNotes([ note ])
   }
 
   return (
@@ -87,7 +91,7 @@ const NoteViewer = (props) => {
               </ActionIcon>
             </ColorPopover>
 
-            <ActionIcon size="xl" color="violet">
+            <ActionIcon size="xl" color="violet" onClick={pinNote}>
               <IconPinned />
             </ActionIcon>
 
