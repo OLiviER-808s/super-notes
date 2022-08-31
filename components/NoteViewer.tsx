@@ -14,10 +14,14 @@ const NoteViewer = ({ id }) => {
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
-  const note = notes.filter(n => n.id === id)[0]
+  const [note, setNote] = useState<any>(notes.filter(n => n.id === id)[0])
   const idx = notes.indexOf(note)
 
   const [colors, setColors] = useState({})
+
+  useEffect(() => {
+    setNote(notes.filter(n => n.id === note.id)[0])
+  }, [notes])
 
   useEffect(() => {
     if (note.color) {
@@ -38,12 +42,20 @@ const NoteViewer = ({ id }) => {
     pinNotes([ note ])
   }
 
+  const moveLeft = () => {
+    setNote(notes[idx - 1])
+  }
+
+  const moveRight = () => {
+    setNote(notes[idx + 1])
+  }
+
   return (
     <Container p="xl" data-close-overlay>
       <Center data-close-overlay>
         <div style={{'width': '100%'}} data-close-overlay>
           <Group position="center" data-close-overlay>
-            <ActionIcon size="lg">
+            <ActionIcon size="lg" onClick={moveLeft} disabled={idx - 1 < 0}>
               <IconArrowBigLeft size={26} />
             </ActionIcon>
 
@@ -75,7 +87,7 @@ const NoteViewer = ({ id }) => {
               </Paper>
             </div>
 
-            <ActionIcon size="lg">
+            <ActionIcon size="lg" onClick={moveRight} disabled={idx + 1 === notes.length}>
               <IconArrowBigRight size={26} />
             </ActionIcon>
           </Group>
