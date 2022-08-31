@@ -1,24 +1,27 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import ColorPopover from "./ColorPopover"
 
-const NoteViewer = ({ note }) => {
+const NoteViewer = ({ idx }) => {
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
-  const getNoteColors = () => {
+  const note = notes[idx]
+  const [colors, setColors] = useState({})
+
+  useEffect(() => {
     if (note.color) {
       const bgColor = makeSolid(note.color)
       const textColor = contrast(bgColor, 'rgba(192, 193, 197)') > contrast(bgColor, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)'
 
-      return { backgroundColor: bgColor, color: textColor }
+      setColors({ backgroundColor: bgColor, color: textColor })
     }
-    else return { }
-  }
+    else setColors({ })
+  }, [note.color])
 
   return (
     <Container p="xl" data-close-overlay>
@@ -36,7 +39,7 @@ const NoteViewer = ({ note }) => {
               radius="md" 
               p="md" 
               withBorder 
-              style={getNoteColors()}>
+              style={colors}>
                 {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
                 {note.audioRef && (
@@ -49,7 +52,7 @@ const NoteViewer = ({ note }) => {
 
                 <div>
                   <Title order={4}>{ note.title }</Title>
-                  <Text lineClamp={12}>{ note.content }</Text>
+                  <Text>{ note.content }</Text>
                 </div>
               </Paper>
             </div>

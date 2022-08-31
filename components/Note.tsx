@@ -10,8 +10,8 @@ import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
 import NoteViewer from "./NoteViewer"
 
-const Note = ({ note }: any) => {
-  const [ opened, setOpened ] = useOverlay(<NoteViewer note={note} />)
+const Note = ({ note, idx }: any) => {
+  const [ opened, setOpened ] = useOverlay(<NoteViewer idx={idx} />)
 
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()

@@ -29,10 +29,10 @@ const NoteFeed = ({ items }: any) => {
     <Center ref={ref} style={{'marginBottom': '1em'}}>
       <Masonry breakpointCols={breakpointConfig} 
       className="my-masonry-grid" columnClassName="my-masonry-grid_column">
-        {items.map((item: any) => {
+        {items.map((item: any, idx: number) => {
           return (
             <div key={item.id}>
-              { item.content ? <Note note={item} /> : <Folder folder={item} /> }
+              { item.content ? <Note note={item} idx={idx} /> : <Folder folder={item} /> }
             </div>
           )
         })}
