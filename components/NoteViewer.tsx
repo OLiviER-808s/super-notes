@@ -8,13 +8,15 @@ import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
 
-const NoteViewer = ({ idx }) => {
+const NoteViewer = (props) => {
   const [ opened, setOpened ] = useOverlay(null)
 
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
-  const note = notes[idx]
+  const [note, setNote] = useState(notes.filter(n => n.id === props.note.id)[0])
+  const idx = notes.indexOf(note)
+
   const [colors, setColors] = useState({})
 
   useEffect(() => {
@@ -25,7 +27,7 @@ const NoteViewer = ({ idx }) => {
       setColors({ backgroundColor: bgColor, color: textColor })
     }
     else setColors({ })
-  }, [note.color])
+  }, [note])
 
   const deleteNote = () => {
     deleteNotes([ note ])
@@ -42,8 +44,11 @@ const NoteViewer = ({ idx }) => {
             </ActionIcon>
 
             <div style={{'maxWidth': '600px'}}>
+              {note.pinned && (
+                <Text color="violet"><IconPinned size={16} />Pinned</Text>
+              )}
+
               <Paper 
-              onClick={e => e.stopPropagation()}
               shadow="xs" 
               radius="md" 
               p="md" 
