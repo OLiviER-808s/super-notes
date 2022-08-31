@@ -50,7 +50,7 @@ const Toolbar = () => {
                   <IconX />
                 </ActionIcon>
 
-                <AddToFolder />
+                <AddToFolder buttonHover={false} />
                 
                 <ColorPopover notes={notes} setNotes={setNotes}>
                   <ActionIcon color="orange" size="xl" variant="light">

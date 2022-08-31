@@ -68,7 +68,7 @@ a {
 }
 
 .overlay-inner {
-  z-index: 6;
+  z-index: 5;
   opacity: 1;
   position: absolute;
   height: 100%;

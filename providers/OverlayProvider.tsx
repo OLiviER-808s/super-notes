@@ -20,13 +20,17 @@ export const useOverlay = (children): Array<any> => {
 const OverlayProvider = ({ children }) => {
   const [content, setContent] = useState(null)
 
+  const closeOverlay = (e) => {
+    if (e.target.dataset.closeOverlay) setContent(null)
+  }
+
   return (
     <OverlayContext.Provider value={content}>
       <OverlaySetContext.Provider value={setContent}>
         {content && (
           <>
-            <Overlay opacity={0.75} color="black" zIndex={5} />
-            <div className="overlay-inner" onClick={() => setContent(null)}>{ content }</div>
+            <Overlay opacity={0.75} color="black" zIndex={5} onClick={() => setContent(null)} />
+            <div className="overlay-inner" data-close-overlay onClick={closeOverlay}>{ content }</div>
           </>
         )}
 

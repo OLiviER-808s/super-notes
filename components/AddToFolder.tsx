@@ -22,7 +22,7 @@ const SelectItem = forwardRef<HTMLDivElement, any>(
   )
 );
 
-const AddToFolder = () => {
+const AddToFolder = ({ buttonHover }) => {
   const [opened, setOpened] = useState(false)
 
   const [folders, setFolders] = useState<any>([])
@@ -90,7 +90,7 @@ const AddToFolder = () => {
         </div>
       </Modal>
 
-      <ActionIcon color="blue" size="xl" variant="light" onClick={() => setOpened(true)}>
+      <ActionIcon color="blue" size="xl" variant={buttonHover ? 'hover' : 'light'} onClick={() => setOpened(true)}>
         <IconFolderPlus />
       </ActionIcon>
     </>

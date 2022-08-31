@@ -1,9 +1,15 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
-import { IconArrowBigLeft, IconArrowBigRight, IconFolderPlus, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
+import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
+import { useContext } from "react"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
+import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
+import ColorPopover from "./ColorPopover"
 
 const NoteViewer = ({ note }) => {
+  const notes = useContext(NotesContext)
+  const setNotes = useContext(SetNotesContext)
+
   const getNoteColors = () => {
     if (note.color) {
       const bgColor = makeSolid(note.color)
@@ -15,10 +21,10 @@ const NoteViewer = ({ note }) => {
   }
 
   return (
-    <Container p="xl">
-      <Center>
-        <div style={{'width': '100%'}}>
-          <Group position="center">
+    <Container p="xl" data-close-overlay>
+      <Center data-close-overlay>
+        <div style={{'width': '100%'}} data-close-overlay>
+          <Group position="center" data-close-overlay>
             <ActionIcon size="lg">
               <IconArrowBigLeft size={26} />
             </ActionIcon>
@@ -53,24 +59,22 @@ const NoteViewer = ({ note }) => {
             </ActionIcon>
           </Group>
 
-          <Group position="center" spacing="md" p="xl">
+          <Group position="center" spacing="md" p="xl" data-close-overlay>
             <ActionIcon color="green" size="xl">
               <IconPencil />
             </ActionIcon>
 
-            <ActionIcon color="blue" size="xl">
-              <IconFolderPlus />
-            </ActionIcon>
-
-            <ActionIcon color="orange" size="xl">
-              <IconPalette />
-            </ActionIcon>
+            <ColorPopover notes={notes} setNotes={setNotes}>
+              <ActionIcon color="orange" size="xl">
+                <IconPalette />
+              </ActionIcon>
+            </ColorPopover>
 
             <ActionIcon size="xl" color="violet">
               <IconPinned />
             </ActionIcon>
 
-            <ActionIcon size="xl" color="red">
+            <ActionIcon size="xl" color="red" data-avoid-close>
               <IconTrash />
             </ActionIcon>
           </Group>
