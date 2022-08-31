@@ -55,9 +55,11 @@ const NoteViewer = ({ id }) => {
       <Center data-close-overlay>
         <div style={{'width': '100%'}} data-close-overlay>
           <Group position="center" data-close-overlay>
-            <ActionIcon size="lg" onClick={moveLeft} disabled={idx - 1 < 0}>
-              <IconArrowBigLeft size={26} />
-            </ActionIcon>
+            {idx - 1 > -1 && (
+              <ActionIcon size="lg" onClick={moveLeft}>
+                <IconArrowBigLeft size={26} />
+              </ActionIcon>
+            )}
 
             <div style={{'maxWidth': '600px'}}>
               {note.pinned && (
@@ -86,10 +88,12 @@ const NoteViewer = ({ id }) => {
                 </div>
               </Paper>
             </div>
-
-            <ActionIcon size="lg" onClick={moveRight} disabled={idx + 1 === notes.length}>
-              <IconArrowBigRight size={26} />
-            </ActionIcon>
+            
+            {idx + 1 < notes.length && (
+              <ActionIcon size="lg" onClick={moveRight}>
+                <IconArrowBigRight size={26} />
+              </ActionIcon>
+            )}
           </Group>
 
           <Group position="center" spacing="md" p="xl" data-close-overlay>
