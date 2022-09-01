@@ -28,14 +28,13 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
     changeNoteColors(selectedNotes, color)
 
     setOpened(false)
-    setNotes(notes.map((n: NoteModel) => ({ ...n, selected: false })))
   }
 
   return (
     <Popover opened={opened} 
     onClose={confirmChange} 
     width="auto"
-    position="bottom" 
+    position="bottom"
     target={<div onClick={() => setOpened(true)}>{ children }</div>} 
     withArrow>
       {opened && <ColorPicker format="rgb" onChange={changeColor}

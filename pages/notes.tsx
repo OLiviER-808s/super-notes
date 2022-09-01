@@ -22,16 +22,22 @@ const Notes: NextPage = () => {
 
   useEffect(() => {
     if (user) {
+      // gets notes
       const noteRef = collection(db, 'notes')
       const noteQuery = query(noteRef, where('uid', '==', user.uid), where('path', '==', path),
       orderBy('createdAt', 'desc'))
 
       onSnapshot(noteQuery, (snap) => {
-        setNotes(snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id, selected: false }
-        }))
+        setNotes(prev => {
+          return snap.docs.map(doc => {
+            const selected = prev.filter(n => n.id === doc.id)[0]?.selected || false
+
+            return { ...doc.data(), id: doc.id, selected: selected }
+          })
+        })
       })
 
+      // gets folders
       const folderRef = collection(db, 'folders')
       const folderQuery = query(folderRef, where('uid', '==', user.uid), where('path', '==', path),
       orderBy('createdAt', 'desc'))

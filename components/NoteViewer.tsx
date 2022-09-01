@@ -9,7 +9,7 @@ import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
 
 const NoteViewer = ({ id }) => {
-  const [ opened, setOpened ] = useOverlay(null)
+  const [opened, setOpened] = useOverlay(null)
 
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
@@ -24,6 +24,13 @@ const NoteViewer = ({ id }) => {
   }, [notes])
 
   useEffect(() => {
+    if (!note.selected) {
+      setNotes(notes.map(n => {
+        if (n.id === note.id) return { ...n, selected: true }
+        if (n.selected) return { ...n, selected: false }
+      }))
+    }
+
     if (note.color) {
       const bgColor = makeSolid(note.color)
       const textColor = contrast(bgColor, 'rgba(192, 193, 197)') > contrast(bgColor, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)'
