@@ -25,9 +25,9 @@ const NoteViewer = ({ id }) => {
 
   useEffect(() => {
     if (!note.selected) {
-      setNotes(notes.map(n => {
+      setNotes(prev => prev.map(n => {
         if (n.id === note.id) return { ...n, selected: true }
-        if (n.selected) return { ...n, selected: false }
+        else return { ...n, selected: false }
       }))
     }
 
@@ -78,7 +78,7 @@ const NoteViewer = ({ id }) => {
               radius="md" 
               p="md" 
               withBorder 
-              style={colors}>
+              style={{...colors, whiteSpace: 'pre-line'}}>
                 {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
                 {note.audioRef && (
