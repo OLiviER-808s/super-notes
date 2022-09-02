@@ -1,7 +1,7 @@
-import { Button, Center, Code, FileButton, Group, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { Button, Center, Code, FileButton, Group, LoadingOverlay, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
 import { IconMusic, IconPhoto, IconX } from "@tabler/icons"
 
-const NoteEditor = ({ note, setNote, colors, form }) => {
+const NoteEditor = ({ note, setNote, colors, form, loading }) => {
   const addImage = (file: File) => {
     if (file) {
       const reader = new FileReader()
@@ -38,6 +38,8 @@ const NoteEditor = ({ note, setNote, colors, form }) => {
     withBorder 
     style={colors}>
       <div className="edit-note">
+        <LoadingOverlay visible={loading} />
+
         <TextInput 
         { ...form.getInputProps('title') }
         size="lg"

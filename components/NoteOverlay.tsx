@@ -121,7 +121,7 @@ const NoteOverlay = ({ id }) => {
               )}
 
               {editMode ? 
-              <NoteEditor note={note} form={form} colors={colors} setNote={setNote} /> : 
+              <NoteEditor note={note} form={form} colors={colors} setNote={setNote} loading={loading} /> : 
               <NoteViewer note={note} colors={colors} />}
             </div>
             
