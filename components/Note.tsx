@@ -124,6 +124,8 @@ const Note = ({ note }: any) => {
       withBorder 
       style={{'backgroundColor': note.color || null}}>
         <div {...longPressEvent}>
+          <Title order={4}>{ note.title }</Title>
+
           {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
           {note.audioRef && (
@@ -134,10 +136,7 @@ const Note = ({ note }: any) => {
             </Center>
           )}
 
-          <div>
-            <Title order={4}>{ note.title }</Title>
-            <Text lineClamp={12}>{ note.content }</Text>
-          </div>
+          <Text lineClamp={12}>{ note.content }</Text>
         </div>
         
         {hovered && width > 800 && (

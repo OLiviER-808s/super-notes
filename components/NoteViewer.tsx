@@ -8,6 +8,8 @@ const NoteViewer = ({ note, colors }) => {
     p="md" 
     withBorder 
     style={{...colors, whiteSpace: 'pre-line'}}>
+      <Title order={4}>{ note.title }</Title>
+
       {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
       {note.audioRef && (
@@ -18,10 +20,7 @@ const NoteViewer = ({ note, colors }) => {
         </Center>
       )}
 
-      <div>
-        <Title order={4}>{ note.title }</Title>
-        <Text>{ note.content }</Text>
-      </div>
+      <Text>{ note.content }</Text>
     </Paper>
   )
 }

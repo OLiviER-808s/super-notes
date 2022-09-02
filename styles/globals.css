@@ -76,3 +76,9 @@ a {
   top: 0;
   left: 0;
 }
+
+.edit-note input {
+  font-weight: 700;
+  line-height: 1.45;
+  height: auto;
+}

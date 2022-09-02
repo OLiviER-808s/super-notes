@@ -8,6 +8,7 @@ import { makeSolid } from "../lib/helpers"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
+import NoteEditor from "./NoteEditor"
 import NoteViewer from "./NoteViewer"
 
 const NoteOverlay = ({ id }) => {
@@ -21,6 +22,7 @@ const NoteOverlay = ({ id }) => {
 
   const [colors, setColors] = useState({})
 
+  const [editMode, setEditMode] = useState(false)
   const form = useForm({
     initialValues: {
       title: note.title,
@@ -75,7 +77,7 @@ const NoteOverlay = ({ id }) => {
   return (
     <Container p="xl" data-close-overlay>
       <Center data-close-overlay>
-        <div style={{'width': '100%'}} data-close-overlay>
+        <div style={{'width': '100%', 'maxHeight': '100%'}} data-close-overlay>
           <Group position="center" data-close-overlay>
             {idx - 1 > -1 && (
               <ActionIcon size="lg" onClick={moveLeft}>
@@ -83,12 +85,14 @@ const NoteOverlay = ({ id }) => {
               </ActionIcon>
             )}
 
-            <div style={{'maxWidth': '600px'}}>
+            <div style={{'width': '100%', 'maxWidth': '600px'}}>
               {note.pinned && (
                 <Text color="violet"><IconPinned size={16} />Pinned</Text>
               )}
 
-              <NoteViewer note={note} colors={colors} />
+              {editMode ? 
+              <NoteEditor note={note} form={form} colors={colors} setNote={setNote} /> : 
+              <NoteViewer note={note} colors={colors} />}
             </div>
             
             {idx + 1 < notes.length && (
@@ -99,7 +103,7 @@ const NoteOverlay = ({ id }) => {
           </Group>
 
           <Group position="center" spacing="md" p="xl" data-close-overlay>
-            <ActionIcon color="green" size="xl">
+            <ActionIcon color="green" size="xl" onClick={() => setEditMode(true)}>
               <IconPencil />
             </ActionIcon>
 
