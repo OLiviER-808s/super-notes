@@ -31,16 +31,24 @@ const Home: NextPage = () => {
       </div>
 
       <Paper shadow="md" p="md" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
-        <Tabs tabPadding="md">
-          <Tabs.Tab label="About">
+        <Tabs defaultValue="about" variant="pills">
+          <Tabs.List>
+            <Tabs.Tab value="about">About</Tabs.Tab>
+            <Tabs.Tab value="signup">Signup</Tabs.Tab>
+            <Tabs.Tab value="login">Login</Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="about" pt="sm">
             <About />
-          </Tabs.Tab>
-          <Tabs.Tab label="Signup">
+          </Tabs.Panel>
+
+          <Tabs.Panel value="signup" pt="sm">
             <SignupTab />
-          </Tabs.Tab>
-          <Tabs.Tab label="Login">
+          </Tabs.Panel>
+
+          <Tabs.Panel value="login" pt="sm">
             <LoginTab />
-          </Tabs.Tab>
+          </Tabs.Panel>
         </Tabs>
       </Paper>
     </div>

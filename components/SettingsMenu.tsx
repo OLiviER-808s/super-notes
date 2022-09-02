@@ -1,4 +1,4 @@
-import { ActionIcon, Kbd, List, ListItem, Menu, Modal, useMantineColorScheme } from "@mantine/core"
+import { ActionIcon, Kbd, List, Menu, Modal, useMantineColorScheme } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import { IconKeyboard, IconLogout, IconMoonStars, IconSettings, IconSun, IconTrashX } from "@tabler/icons"
 import { deleteUser, signOut } from "firebase/auth"
@@ -34,46 +34,50 @@ const SettingsMenu = () => {
     <>
       <Modal opened={hotkeysModal} onClose={() => setHotkeysModal(false)} title="Shortcuts">
         <List size="sm" spacing="md">
-          <ListItem>
+          <List.Item>
             <Kbd>Ctrl</Kbd> + <Kbd>J</Kbd> Toggle Theme
-          </ListItem>
-          <ListItem>
+          </List.Item>
+          <List.Item>
             <Kbd>Ctrl</Kbd> + <Kbd>A</Kbd> Select All
-          </ListItem>
-          <ListItem>
+          </List.Item>
+          <List.Item>
             <Kbd>Ctrl</Kbd> + <Kbd>D</Kbd> Deselect All
-          </ListItem>
-          <ListItem>
+          </List.Item>
+          <List.Item>
             <Kbd>Shift</Kbd> + <Kbd>N</Kbd> Add Note
-          </ListItem>
-          <ListItem>
+          </List.Item>
+          <List.Item>
             <Kbd>Shift</Kbd> + <Kbd>F</Kbd> Add Folder
-          </ListItem>
+          </List.Item>
         </List>
       </Modal>
 
-      <Menu shadow="lg" control={
-        <ActionIcon size="xl">
-          <IconSettings />
-        </ActionIcon>
-      } opened={opened} onClose={handlers.close} onOpen={handlers.open}>
-        <Menu.Label>Settings</Menu.Label>
+      <Menu shadow="lg" opened={opened} onClose={handlers.close} onOpen={handlers.open}>
+        <Menu.Target>
+          <ActionIcon size="xl">
+            <IconSettings />
+          </ActionIcon>
+        </Menu.Target>
 
-        <Menu.Item icon={dark ? <IconSun size={16} /> : <IconMoonStars size={16} />} onClick={() => toggleColorScheme()}>
-          Toggle Theme
-        </Menu.Item>
+        <Menu.Dropdown>
+          <Menu.Label>Settings</Menu.Label>
 
-        <Menu.Item icon={<IconKeyboard size={16} />} onClick={() => setHotkeysModal(true)}>
-          Shortcuts
-        </Menu.Item>
+          <Menu.Item icon={dark ? <IconSun size={16} /> : <IconMoonStars size={16} />} onClick={() => toggleColorScheme()}>
+            Toggle Theme
+          </Menu.Item>
 
-        <Menu.Item icon={<IconLogout size={16} />} onClick={logout}>
-          Logout
-        </Menu.Item>
+          <Menu.Item icon={<IconKeyboard size={16} />} onClick={() => setHotkeysModal(true)}>
+            Shortcuts
+          </Menu.Item>
 
-        <Menu.Item color="red" icon={<IconTrashX size={16} />} onClick={deleteAccount}>
-          Delete Account
-        </Menu.Item>
+          <Menu.Item icon={<IconLogout size={16} />} onClick={logout}>
+            Logout
+          </Menu.Item>
+
+          <Menu.Item color="red" icon={<IconTrashX size={16} />} onClick={deleteAccount}>
+            Delete Account
+          </Menu.Item>
+        </Menu.Dropdown>
       </Menu>
     </>
   )

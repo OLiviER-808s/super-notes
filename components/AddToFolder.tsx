@@ -90,7 +90,7 @@ const AddToFolder = ({ buttonHover }) => {
         </div>
       </Modal>
 
-      <ActionIcon color="blue" size="xl" variant={buttonHover ? 'hover' : 'light'} onClick={() => setOpened(true)}>
+      <ActionIcon color="blue" size="xl" variant={buttonHover ? 'subtle' : 'light'} onClick={() => setOpened(true)}>
         <IconFolderPlus />
       </ActionIcon>
     </>

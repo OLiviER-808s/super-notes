@@ -31,14 +31,22 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
   }
 
   return (
-    <Popover opened={opened} 
+    <Popover 
+    opened={opened} 
     onClose={confirmChange} 
     width="auto"
     position="bottom"
-    target={<div onClick={() => setOpened(true)}>{ children }</div>} 
     withArrow>
-      {opened && <ColorPicker format="rgb" onChange={changeColor}
-      swatches={[mainColor, ...removeDuplicates(notes.map((n: NoteModel) => n.color))]} />}
+      <Popover.Target>
+        <div onClick={() => setOpened(true)}>{ children }</div>
+      </Popover.Target>
+      
+      <Popover.Dropdown>
+        <ColorPicker 
+        format="rgb" 
+        onChange={changeColor} 
+        swatches={[mainColor, ...removeDuplicates(notes.map((n: NoteModel) => n.color))]} />
+      </Popover.Dropdown>
     </Popover>
   )
 }
