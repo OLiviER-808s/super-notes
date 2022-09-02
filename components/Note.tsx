@@ -82,7 +82,6 @@ const Note = ({ note }: any) => {
 
     if (newData !== note) {
       setLoading(true)
-      console.log(imageFile)
 
       const { imagePath, imageUrl } = imageFile ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
       const { audioPath, audioUrl } = audioFile ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
