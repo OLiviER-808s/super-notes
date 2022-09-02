@@ -1,4 +1,5 @@
 import { ActionIcon, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
+import { useForm } from "@mantine/form"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
 import { deleteNotes, pinNotes } from "../lib/auth"
@@ -19,6 +20,17 @@ const NoteOverlay = ({ id }) => {
   const [idx, setIdx] = useState(notes.indexOf(note))
 
   const [colors, setColors] = useState({})
+
+  const form = useForm({
+    initialValues: {
+      title: note.title,
+      content: note.content,
+      audioFile: null,
+      audio: note.audioRef || null,
+      imageFile: null,
+      image: note.imageRef || null
+    }
+  })
 
   useEffect(() => {
     setNote(notes.filter(n => n.id === note.id)[0])
