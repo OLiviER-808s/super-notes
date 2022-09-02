@@ -15,7 +15,7 @@ const NoteViewer = ({ id }) => {
   const setNotes = useContext(SetNotesContext)
 
   const [note, setNote] = useState<any>(notes.filter(n => n.id === id)[0])
-  const idx = notes.indexOf(note)
+  const [idx, setIdx] = useState(notes.indexOf(note))
 
   const [colors, setColors] = useState({})
 
@@ -51,10 +51,12 @@ const NoteViewer = ({ id }) => {
 
   const moveLeft = () => {
     setNote(notes[idx - 1])
+    setIdx(idx - 1)
   }
 
   const moveRight = () => {
     setNote(notes[idx + 1])
+    setIdx(idx + 1)
   }
 
   return (

@@ -25,7 +25,6 @@ const Toolbar = () => {
 
   const pinSelected = () => {
     pinNotes(selectedNotes)
-    deselectAll()
   }
 
   const deselectAll = () => {
