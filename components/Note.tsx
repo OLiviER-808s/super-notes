@@ -8,10 +8,10 @@ import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
-import NoteViewer from "./NoteViewer"
+import NoteOverlay from "./NoteOverlay"
 
 const Note = ({ note }: any) => {
-  const [ opened, setOpened ] = useOverlay(<NoteViewer id={note.id} />)
+  const [ opened, setOpened ] = useOverlay(<NoteOverlay id={note.id} />)
 
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
