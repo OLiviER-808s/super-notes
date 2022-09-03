@@ -2,9 +2,12 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { ColorScheme, ColorSchemeProvider, Global, MantineProvider } from '@mantine/core'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
-import NoteListProvider from '../lib/NoteProvider'
-import PathProvider from '../lib/PathProvider'
+import NoteListProvider from '../providers/NoteProvider'
+import PathProvider from '../providers/PathProvider'
 import Head from 'next/head'
+import OverlayProvider from '../providers/OverlayProvider'
+import { useEffect } from 'react'
+import { Workbox } from 'workbox-window'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -18,6 +21,16 @@ function MyApp({ Component, pageProps }: AppProps) {
   }
 
   useHotkeys([['mod+J', () => toggleColorScheme()]])
+
+  useEffect(() => {
+    if (!("serviceWorker" in navigator) || process.env.NODE_ENV !== "production") {
+      console.warn("Progressive Web App support is disabled")
+      return
+    }
+
+    const wb = new Workbox("sw.js", { scope: "/" })
+    wb.register();
+  }, [])
 
   return (
     <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
@@ -37,7 +50,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <PathProvider>
           <NoteListProvider>
-            <Component {...pageProps} />
+            <OverlayProvider>
+              <Component {...pageProps} />
+            </OverlayProvider>
           </NoteListProvider>
         </PathProvider>
       </MantineProvider>

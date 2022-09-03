@@ -2,14 +2,16 @@ import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, 
 import { useForm } from "@mantine/form"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
-import { useContext, useRef, useState } from "react"
+import { useContext, useEffect, useRef, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
 import { editNote, uploadAudio, uploadImage } from "../lib/auth"
-import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
+import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
+import { useOverlay } from "../providers/OverlayProvider"
+import NoteOverlay from "./NoteOverlay"
 
 const Note = ({ note }: any) => {
-  const [opened, setOpened] = useState(false)
+  const [ opened, setOpened ] = useOverlay(<NoteOverlay id={note.id} />)
 
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
@@ -44,7 +46,7 @@ const Note = ({ note }: any) => {
 
   const clickNote = () => {
     if (notes.filter((n: NoteModel) => n.selected).length === 0) setOpened(true)
-    else toggleSelect()
+    toggleSelect()
   }
 
   const addImage = async (e: any) => {
@@ -80,7 +82,6 @@ const Note = ({ note }: any) => {
 
     if (newData !== note) {
       setLoading(true)
-      console.log(imageFile)
 
       const { imagePath, imageUrl } = imageFile ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
       const { audioPath, audioUrl } = audioFile ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
@@ -104,65 +105,26 @@ const Note = ({ note }: any) => {
 
   const longPressEvent = useLongPress(toggleSelect, clickNote)
 
+  useEffect(() => {
+    if (!opened) {
+      setNotes(notes.map((n: NoteModel) => {
+        if (n.id === note.id) return { ...note, selected: false }
+        else return n
+      }))
+    }
+  }, [opened])
+
   return (
     <div className={`note ${note.selected ? 'selected' : null}`} ref={ref}>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Note" overflow="outside">
-        <LoadingOverlay visible={loading} />
-
-        <form className="form" onSubmit={form.onSubmit(handleEdit)}>
-          <TextInput placeholder="Title" autoFocus 
-          {...form.getInputProps('title')}/>
-
-          <input type="file" hidden ref={imageRef} onChange={addImage} />
-          <input type="file" hidden ref={audioRef} onChange={addAudio} />
-
-          {image && <img style={{'maxWidth': '100%'}} src={image}/>}
-
-          {audio && (
-            <Center>
-              <audio controls src={audio}>
-                Your browser does not support the <Code>audio</Code> element.
-              </audio>
-            </Center>
-          )}
-
-          <Group position="center" spacing="xl">
-            {!image ? (
-              <Button variant="outline" radius="xl" size="xs" 
-              onClick={() => imageRef.current.click()}
-              leftIcon={<IconPhoto />}
-              >Add Image</Button>
-            ) : (
-              <Button variant="outline" radius="xl" size="xs"
-              onClick={() => setImage(null)}
-              leftIcon={<IconX />}
-              >Remove Image</Button>
-            )}
-
-            {!audio ? (
-              <Button variant="outline" radius="xl" size="xs"
-              leftIcon={<IconMusic />} color="orange"
-              onClick={() => audioRef.current.click()}
-              >Add Audio</Button>
-            ) : (
-              <Button variant="outline" radius="xl" size="xs"
-              onClick={() => setAudio(null)} color="orange"
-              leftIcon={<IconX />}
-              >Remove Audio</Button>
-            )}
-          </Group>
-
-          <Textarea placeholder="Content" minRows={8} autosize maxRows={18}
-          {...form.getInputProps('content')}/>
-
-          <Group position="right" style={{'margin': 0}}>
-            <Button color="green" type="submit">Edit</Button>
-          </Group>
-        </form>
-      </Modal>
-
-      <Paper shadow="xs" radius="md" p="md" withBorder style={{'backgroundColor': note.color || null}}>
+      <Paper 
+      shadow="xs" 
+      radius="md" 
+      p="md" 
+      withBorder 
+      style={{'backgroundColor': note.color || null}}>
         <div {...longPressEvent}>
+          <Title order={4}>{ note.title }</Title>
+
           {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
           {note.audioRef && (
@@ -173,10 +135,7 @@ const Note = ({ note }: any) => {
             </Center>
           )}
 
-          <div>
-            <Title order={4}>{ note.title }</Title>
-            <Text lineClamp={12}>{ note.content }</Text>
-          </div>
+          <Text lineClamp={12}>{ note.content }</Text>
         </div>
         
         {hovered && width > 800 && (

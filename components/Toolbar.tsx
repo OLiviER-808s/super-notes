@@ -2,19 +2,21 @@ import { ActionIcon, Center, Group } from "@mantine/core"
 import { IconPalette, IconPinned, IconTrash, IconX } from "@tabler/icons"
 import { useContext } from "react"
 import { deleteNotes, pinNotes } from "../lib/auth"
-import { NotesContext, SetNotesContext } from "../lib/NoteProvider"
+import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 import AddFolder from "./AddFolder"
 import AddNote from "./AddNote"
 import AddToFolder from "./AddToFolder"
 import ColorPopover from "./ColorPopover"
 import SettingsMenu from "./SettingsMenu"
+import { useOverlay } from "../providers/OverlayProvider"
 
 const Toolbar = () => {
   const notes: NoteModel[] = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
 
   const selectedNotes = notes.filter((note: NoteModel) => note.selected)
+  const [ overlayOpen ] = useOverlay(null)
 
   const deleteSelected = () => {
     deleteNotes(selectedNotes)
@@ -23,7 +25,6 @@ const Toolbar = () => {
 
   const pinSelected = () => {
     pinNotes(selectedNotes)
-    deselectAll()
   }
 
   const deselectAll = () => {
@@ -35,20 +36,20 @@ const Toolbar = () => {
       <Center>
         <div style={{'maxWidth': '840px', 'width': '100%'}}>
           <Group spacing="xs">
-            {selectedNotes.length === 0 && (
+            {(selectedNotes.length === 0 || overlayOpen) && (
               <>
                 <AddNote />
                 <AddFolder />
               </>
             )}
 
-            {selectedNotes.length > 0 && (
+            {selectedNotes.length > 0 && !overlayOpen && (
               <>
                 <ActionIcon size="xl" variant="light" onClick={deselectAll}>
                   <IconX />
                 </ActionIcon>
 
-                <AddToFolder />
+                <AddToFolder buttonHover={false} />
                 
                 <ColorPopover notes={notes} setNotes={setNotes}>
                   <ActionIcon color="orange" size="xl" variant="light">
@@ -56,7 +57,7 @@ const Toolbar = () => {
                   </ActionIcon>
                 </ColorPopover>
 
-                <ActionIcon size="xl" variant="light" onClick={pinSelected}>
+                <ActionIcon color="violet" size="xl" variant="light" onClick={pinSelected}>
                   <IconPinned />
                 </ActionIcon>
 

@@ -4,7 +4,7 @@ import { collection, doc, getDocs, query, where, writeBatch } from "firebase/fir
 import { forwardRef, useContext, useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../lib/firebase"
-import { NotesContext } from "../lib/NoteProvider"
+import { NotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 
 const SelectItem = forwardRef<HTMLDivElement, any>(
@@ -22,7 +22,7 @@ const SelectItem = forwardRef<HTMLDivElement, any>(
   )
 );
 
-const AddToFolder = () => {
+const AddToFolder = ({ buttonHover }) => {
   const [opened, setOpened] = useState(false)
 
   const [folders, setFolders] = useState<any>([])
@@ -90,7 +90,7 @@ const AddToFolder = () => {
         </div>
       </Modal>
 
-      <ActionIcon color="blue" size="xl" variant="light" onClick={() => setOpened(true)}>
+      <ActionIcon color="blue" size="xl" variant={buttonHover ? 'subtle' : 'light'} onClick={() => setOpened(true)}>
         <IconFolderPlus />
       </ActionIcon>
     </>

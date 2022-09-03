@@ -5,7 +5,7 @@ import { addDoc, collection, doc, getDocs, query, where } from "firebase/firesto
 import { useContext, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db, timestamp } from "../lib/firebase"
-import { PathContext } from "../lib/PathProvider"
+import { PathContext } from "../providers/PathProvider"
 
 const AddFolder = () => {
   const [opened, setOpened] = useState(false)
@@ -32,7 +32,7 @@ const AddFolder = () => {
       const ref = collection(db, 'folders')
 
       // checks to see if folder with that name already exists
-      const q = query(ref, where('path', '==', path), where('name', '==', name))
+      const q = query(ref, where('path', '==', path), where('name', '==', name), where('uid', '==', user?.uid))
       const empty = (await getDocs(q)).empty
 
       if (empty) {

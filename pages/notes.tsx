@@ -7,8 +7,8 @@ import NoteFeed from "../components/NoteFeed";
 import PathTracker from "../components/PathTracker";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
-import { NotesContext, SetNotesContext } from "../lib/NoteProvider";
-import { PathContext } from "../lib/PathProvider";
+import { NotesContext, SetNotesContext } from "../providers/NoteProvider";
+import { PathContext } from "../providers/PathProvider";
 import NoteModel from "../models/Note.model";
 
 const Notes: NextPage = () => {
@@ -22,16 +22,22 @@ const Notes: NextPage = () => {
 
   useEffect(() => {
     if (user) {
+      // gets notes
       const noteRef = collection(db, 'notes')
       const noteQuery = query(noteRef, where('uid', '==', user.uid), where('path', '==', path),
       orderBy('createdAt', 'desc'))
 
       onSnapshot(noteQuery, (snap) => {
-        setNotes(snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id, selected: false }
-        }))
+        setNotes(prev => {
+          return snap.docs.map(doc => {
+            const selected = prev.filter(n => n.id === doc.id)[0]?.selected || false
+
+            return { ...doc.data(), id: doc.id, selected: selected }
+          })
+        })
       })
 
+      // gets folders
       const folderRef = collection(db, 'folders')
       const folderQuery = query(folderRef, where('uid', '==', user.uid), where('path', '==', path),
       orderBy('createdAt', 'desc'))

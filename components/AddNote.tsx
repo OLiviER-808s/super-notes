@@ -6,7 +6,7 @@ import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
-import { PathContext } from "../lib/PathProvider"
+import { PathContext } from "../providers/PathProvider"
 import { useHotkeys } from "@mantine/hooks"
 import { uploadAudio, uploadImage } from "../lib/auth"
 
