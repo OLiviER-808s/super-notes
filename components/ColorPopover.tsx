@@ -1,7 +1,7 @@
 import { ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
 import { useState } from "react"
 import { changeNoteColors } from "../lib/auth"
-import { makeTransparent, removeDuplicates } from "../lib/helpers"
+import { makeSolid, makeTransparent, removeDuplicates } from "../lib/helpers"
 import NoteModel from "../models/Note.model"
 
 const ColorPopover = ({ children, notes, setNotes }: any) => {
@@ -45,7 +45,7 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
         <ColorPicker 
         format="rgb" 
         onChange={changeColor} 
-        swatches={[mainColor, ...removeDuplicates(notes.map((n: NoteModel) => n.color))]} />
+        swatches={[mainColor, ...removeDuplicates(notes.map((n: NoteModel) => makeSolid(n.color)))]} />
       </Popover.Dropdown>
     </Popover>
   )
