@@ -1,4 +1,4 @@
-import { Button, Center, Code, Group, LoadingOverlay, Modal, Textarea, TextInput } from "@mantine/core"
+import { Button, Center, Code, FileButton, Group, LoadingOverlay, Modal, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconMusic, IconNote, IconPhoto, IconX } from "@tabler/icons"
 import { useContext, useRef, useState } from "react"
@@ -12,57 +12,61 @@ import { uploadAudio, uploadImage } from "../lib/auth"
 
 const AddNote = () => {
   const [opened, setOpened] = useState(false)
-  const imageRef: any = useRef(null)
-  const audioRef: any = useRef(null)
 
   const [user] = useAuthState(auth)
   const path = useContext(PathContext)
-
-  const [image, setImage]: any = useState(null)
-  const [imageFile, setImageFile]: any = useState(null)
-
-  const [audio, setAudio]: any = useState(null)
-  const [audioFile, setAudioFile]: any = useState(null)
 
   const [loading, setLoading] = useState(false)
 
   const form = useForm({
     initialValues: {
       title: '',
-      content: ''
+      content: '',
+      audioFile: null,
+      audio: null,
+      imageFile: null,
+      image: null
     }
   })
 
   useHotkeys([['shift+n', () => setOpened(true)]])
 
-  const addImage = async (e: any) => {
-    const file: File = e.target.files[0]
-
+  const addImage = (file: File) => {
     if (file) {
       const reader = new FileReader()
-      reader.addEventListener('loadend', (e) => setImage(e.target?.result))
+      reader.addEventListener('loadend', (e) => form.setFieldValue('image', e.target?.result))
       reader.readAsDataURL(file)
-      setImageFile(file)
+      form.setFieldValue('imageFile', file)
     }
   }
 
-  const addAudio = async (e: any) => {
-    const file: File = e.target.files[0]
+  const removeImage = () => {
+    form.setFieldValue('imageFile', null)
+    form.setFieldValue('image', null)
+  }
 
+  const addAudio = (file: File) => {
     if (file) {
       const reader = new FileReader()
-      reader.addEventListener('loadend', (e) => setAudio(e.target?.result))
+      reader.addEventListener('loadend', (e) => form.setFieldValue('audio', e.target?.result))
       reader.readAsDataURL(file)
-      setAudioFile(file)
+      form.setFieldValue('audioFile', file)
     }
+  }
+
+  const removeAudio = () => {
+    form.setFieldValue('audioFile', null)
+    form.setFieldValue('audio', null)
   }
 
   const handleSubmit = async () => {
-    if (form.values.title || form.values.content) {
+    console.log(form)
+    console.log(form.isDirty())
+    if (form.isDirty()) {
       setLoading(true)
 
-      const { imagePath, imageUrl } = image ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
-      const { audioPath, audioUrl } = audio ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
+      const { imagePath, imageUrl } = form.values.image ? await uploadImage(form.values.imageFile) : { imageUrl: null, imagePath: null }
+      const { audioPath, audioUrl } = form.values.audio ? await uploadAudio(form.values.audioFile) : { audioPath: null, audioUrl: null }
 
       const note: NoteModel = {
         title: form.values.title,
@@ -88,8 +92,6 @@ const AddNote = () => {
   const closeModal = () => {
     setOpened(false)
     form.reset()
-    setImage(null)
-    setAudio(null)
   }
 
   return (
@@ -101,44 +103,62 @@ const AddNote = () => {
           <TextInput placeholder="Note title" label="Title" autoFocus 
           {...form.getInputProps('title')}/>
 
-          <input type="file" hidden ref={imageRef} onChange={addImage} />
-          <input type="file" hidden ref={audioRef} onChange={addAudio} />
-
-          {image && <img style={{'maxWidth': '100%'}} src={image}/>}
-
-          {audio && (
-            <Center>
-              <audio controls src={audio}>
-                Your browser does not support the <Code>audio</Code> element.
-              </audio>
-            </Center>
-          )}
-
-          <Group position="center" spacing="xl">
-            {!image ? (
-              <Button variant="outline" radius="xl" size="xs" 
-              onClick={() => imageRef.current.click()}
-              leftIcon={<IconPhoto />}
-              >Add Image</Button>
+          <Group position="center" spacing="xl" py="xs">
+            {!form.values.image ? (
+              <FileButton onChange={addImage} accept="image/png,image/jpeg">
+                {props => (
+                  <Button 
+                  {...props}
+                  variant="outline" 
+                  radius="xl" 
+                  size="xs" 
+                  leftIcon={<IconPhoto />}
+                  >Add Image</Button>
+                )}
+              </FileButton>
             ) : (
-              <Button variant="outline" radius="xl" size="xs"
-              onClick={() => setImage(null)}
+              <Button 
+              onClick={removeImage}
+              variant="outline" 
+              radius="xl" 
+              size="xs"
               leftIcon={<IconX />}
               >Remove Image</Button>
             )}
 
-            {!audio ? (
-              <Button variant="outline" radius="xl" size="xs"
-              leftIcon={<IconMusic />} color="orange"
-              onClick={() => audioRef.current.click()}
-              >Add Audio</Button>
+            {!form.values.audio ? (
+              <FileButton onChange={addAudio}>
+                {props => (
+                  <Button 
+                  variant="outline" 
+                  radius="xl" 
+                  size="xs"
+                  leftIcon={<IconMusic />} 
+                  color="orange"
+                  >Add Audio</Button>
+                )}
+              </FileButton>
             ) : (
-              <Button variant="outline" radius="xl" size="xs"
-              onClick={() => setAudio(null)} color="orange"
+              <Button 
+              onClick={removeAudio}
+              variant="outline" 
+              radius="xl" 
+              size="xs"
+              color="orange"
               leftIcon={<IconX />}
               >Remove Audio</Button>
             )}
           </Group>
+
+          {form.values.image && <img style={{'maxWidth': '100%'}} src={form.values.image}/>}
+
+          {form.values.audio && (
+            <Center>
+              <audio controls src={form.values.audio}>
+                Your browser does not support the <Code>audio</Code> element.
+              </audio>
+            </Center>
+          )}
 
           <Textarea 
           data-autofocus
@@ -149,7 +169,7 @@ const AddNote = () => {
           {...form.getInputProps('content')}/>
 
           <Group position="right" style={{'margin': '0'}}>
-            <Button color="green" type="submit">Add Note</Button>
+            <Button color="green" type="submit">Confirm</Button>
           </Group>
         </form>
       </Modal>

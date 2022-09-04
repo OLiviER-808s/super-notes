@@ -32,7 +32,7 @@ const NoteFeed = ({ items }: any) => {
         {items.map((item: any) => {
           return (
             <div key={item.id}>
-              { item.content ? <Note note={item} /> : <Folder folder={item} /> }
+              { !item.name ? <Note note={item} /> : <Folder folder={item} /> }
             </div>
           )
         })}
