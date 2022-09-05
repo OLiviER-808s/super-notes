@@ -83,6 +83,7 @@ const NoteEditor = ({ note, setNote, colors, form, loading }) => {
             <FileButton onChange={addAudio}>
               {props => (
                 <Button 
+                {...props}
                 variant="outline" 
                 radius="xl" 
                 size="xs"

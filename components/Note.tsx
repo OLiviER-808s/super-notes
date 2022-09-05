@@ -1,10 +1,8 @@
-import { ActionIcon, Button, Center, Code, Group, LoadingOverlay, Modal, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
-import { useForm } from "@mantine/form"
+import { ActionIcon, Button, Center, Group, Paper, Text, Title } from "@mantine/core"
 import { useHover, useViewportSize } from "@mantine/hooks"
-import { IconCheck, IconMusic, IconPhoto, IconX } from "@tabler/icons"
-import { useContext, useEffect, useRef, useState } from "react"
+import { IconCheck, IconPlayerPlay, IconX } from "@tabler/icons"
+import { useContext, useEffect } from "react"
 import useLongPress from "../hooks/useLongPress"
-import { editNote, uploadAudio, uploadImage } from "../lib/auth"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
@@ -15,24 +13,6 @@ const Note = ({ note }: any) => {
 
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
-
-  const imageRef: any = useRef(null)
-  const audioRef: any = useRef(null)
-
-  const [image, setImage]: any = useState(note.imageRef || null)
-  const [imageFile, setImageFile]: any = useState(null)
-
-  const [audio, setAudio]: any = useState(note.audioRef || null)
-  const [audioFile, setAudioFile]: any = useState(null)
-
-  const [loading, setLoading] = useState(false)
-
-  const form = useForm({
-    initialValues: {
-      title: note.title,
-      content: note.content
-    }
-  })
 
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
@@ -49,58 +29,8 @@ const Note = ({ note }: any) => {
     toggleSelect()
   }
 
-  const addImage = async (e: any) => {
-    const file: File = e.target.files[0]
-
-    if (file) {
-      const reader = new FileReader()
-      reader.addEventListener('loadend', (e) => setImage(e.target?.result))
-      reader.readAsDataURL(file)
-      setImageFile(file)
-    }
-  }
-
-  const addAudio = async (e: any) => {
-    const file: File = e.target.files[0]
-
-    if (file) {
-      const reader = new FileReader()
-      reader.addEventListener('loadend', (e) => setAudio(e.target?.result))
-      reader.readAsDataURL(file)
-      setAudioFile(file)
-    }
-  }
-
-  const handleEdit = async () => {
-    const newData: NoteModel = { 
-      ...note, 
-      title: form.values.title, 
-      content: form.values.content,
-      imageRef: image,
-      audioRef: audio
-    }
-
-    if (newData !== note) {
-      setLoading(true)
-
-      const { imagePath, imageUrl } = imageFile ? await uploadImage(imageFile) : { imageUrl: null, imagePath: null }
-      const { audioPath, audioUrl } = audioFile ? await uploadAudio(audioFile) : { audioPath: null, audioUrl: null }
-
-      const data: NoteModel = {
-        ...note,
-        title: form.values.title, 
-        content: form.values.content,
-        imagePath: imagePath || (image ? note.imagePath : null),
-        imageRef: imageUrl || (image ? note.imageRef : null),
-        audioPath: audioPath || (audio ? note.audioPath : null),
-        audioRef: audioUrl || (audio ? note.audioRef : null)
-      }
-
-      editNote(data)
-    }
-
-    setOpened(false)
-    setLoading(false)
+  const playAudio = () => {
+    
   }
 
   const longPressEvent = useLongPress(toggleSelect, clickNote)
@@ -122,20 +52,32 @@ const Note = ({ note }: any) => {
       p="md" 
       withBorder 
       style={{'backgroundColor': note.color || null}}>
-        <div {...longPressEvent}>
-          <Title order={4}>{ note.title }</Title>
+        <div>
+          <div {...longPressEvent}>
+            <Title order={4}>{ note.title }</Title>
 
-          {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
+            {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
+          </div>
 
           {note.audioRef && (
             <Center>
-              <audio controls src={note.audioRef}>
-                Your browser does not support the <Code>audio</Code> element.
-              </audio>
+              <Button 
+              id="playAudioBtn"
+              onClick={playAudio}
+              onMouseUp={playAudio}
+              color="orange" 
+              variant="outline" 
+              size="sm"
+              m="sm"
+              leftIcon={<IconPlayerPlay />}>
+                Play Audio
+              </Button>
             </Center>
           )}
 
-          <Text lineClamp={12}>{ note.content }</Text>
+          <div {...longPressEvent}>
+            <Text lineClamp={12}>{ note.content }</Text>
+          </div>
         </div>
         
         {hovered && width > 800 && (

@@ -130,6 +130,7 @@ const AddNote = () => {
               <FileButton onChange={addAudio}>
                 {props => (
                   <Button 
+                  {...props}
                   variant="outline" 
                   radius="xl" 
                   size="xs"
