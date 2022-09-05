@@ -1,12 +1,18 @@
 import { ActionIcon, Group, Paper, Slider, Title } from "@mantine/core"
-import { IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
+import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"
 
 const AudioBar = () => {
-  const [ audio, setAudio ] = useAudio()
+  const [audio, setAudio] = useAudio()
 
   const [sliderValue, setSliderValue] = useState(0)
+  const [playing, setPlaying] = useState(false)
+
+  const playPause = () => {
+    if (audio.paused) audio.play()
+    else audio.pause()
+  }
 
   useEffect(() => {
     if (audio) {
@@ -17,10 +23,13 @@ const AudioBar = () => {
           setSliderValue((audio.currentTime / audio.duration) * 100)
         }, 500)
       })
+
+      audio.addEventListener('play', () => setPlaying(true))
+      audio.addEventListener('pause', () => setPlaying(false))
     }
   }, [audio])
 
-  return (
+  return audio ? (
     <div className="footer">
       <Paper p="md" withBorder>
         <Group position="apart" mb="xs">
@@ -31,8 +40,8 @@ const AudioBar = () => {
               <IconPlayerTrackPrev />
             </ActionIcon>
 
-            <ActionIcon size="lg" variant="filled" color="green">
-              <IconPlayerPlay />
+            <ActionIcon size="lg" variant="filled" color="green" onClick={playPause}>
+              { playing ? <IconPlayerPause /> : <IconPlayerPlay /> }
             </ActionIcon>
 
             <ActionIcon size="lg">
@@ -50,6 +59,8 @@ const AudioBar = () => {
         </div>
       </Paper>
     </div>
+  ) : (
+    <></>
   )
 }
 

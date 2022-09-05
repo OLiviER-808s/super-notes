@@ -1,6 +1,6 @@
 import { ActionIcon, Button, Center, Group, Paper, Text, Title } from "@mantine/core"
 import { useHover, useViewportSize } from "@mantine/hooks"
-import { IconCheck, IconPlayerPlay, IconX } from "@tabler/icons"
+import { IconCheck, IconPlayerPause, IconPlayerPlay, IconX } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
@@ -19,7 +19,7 @@ const Note = ({ note }: any) => {
   const setNotes = useContext(SetNotesContext)
 
   const [ audio, setAudio ] = useAudio()
-  const [ playing, setPlaying ] = useState(null)
+  const [ playing, setPlaying ] = useState(false)
 
   const toggleSelect = () => {
     setNotes(notes.map((n: NoteModel) => {
@@ -33,22 +33,31 @@ const Note = ({ note }: any) => {
     toggleSelect()
   }
 
-  const playAudio = () => {
-    if (audio && audio.src === note.audioRef) {
-      if (playing) audio.pause()
-      else audio.play()
+  const longPressEvent = useLongPress(toggleSelect, clickNote)
 
-      setPlaying(!playing)
+  const playPause = () => {
+    if (audio && audio.src === note.audioRef) {
+      if (audio.paused) audio.play()
+      else audio.pause()
     }
     else {
       const a = new Audio(note.audioRef)
       setAudio(a)
-      setPlaying(true)
     }
-    console.log(playing)
   }
 
-  const longPressEvent = useLongPress(toggleSelect, clickNote)
+  useEffect(() => {
+    if (audio && audio && audio.src === note.audioRef) {
+      audio.addEventListener('play', () => setPlaying(true))
+      audio.addEventListener('pause', () => setPlaying(false))
+    }
+    else if (audio) {
+      audio.removeEventListener('play', () => {})
+      audio.removeEventListener('pause', () => {})
+      
+      setPlaying(false)
+    }
+  }, [audio])
 
   useEffect(() => {
     if (!opened) {
@@ -78,13 +87,13 @@ const Note = ({ note }: any) => {
             <Center>
               <Button 
               id="playAudioBtn"
-              onClick={playAudio}
+              onClick={playPause}
               color="orange" 
               variant="outline" 
               size="sm"
               m="sm"
-              leftIcon={<IconPlayerPlay />}>
-                Play Audio
+              leftIcon={playing ? <IconPlayerPause /> : <IconPlayerPlay />}>
+                { playing ? 'Pause Audio' : 'Play Audio' }
               </Button>
             </Center>
           )}
