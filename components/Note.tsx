@@ -1,12 +1,13 @@
 import { ActionIcon, Button, Center, Group, Paper, Text, Title } from "@mantine/core"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconPlayerPlay, IconX } from "@tabler/icons"
-import { useContext, useEffect } from "react"
+import { useContext, useEffect, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
 import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
 import NoteOverlay from "./NoteOverlay"
+import { useAudio } from "../providers/AudioProvider"
 
 const Note = ({ note }: any) => {
   const [ opened, setOpened ] = useOverlay(<NoteOverlay id={note.id} />)
@@ -16,6 +17,9 @@ const Note = ({ note }: any) => {
 
   const notes = useContext(NotesContext)
   const setNotes = useContext(SetNotesContext)
+
+  const [ audio, setAudio ] = useAudio()
+  const [ playing, setPlaying ] = useState(null)
 
   const toggleSelect = () => {
     setNotes(notes.map((n: NoteModel) => {
@@ -30,7 +34,18 @@ const Note = ({ note }: any) => {
   }
 
   const playAudio = () => {
-    
+    if (audio && audio.src === note.audioRef) {
+      if (playing) audio.pause()
+      else audio.play()
+
+      setPlaying(!playing)
+    }
+    else {
+      const a = new Audio(note.audioRef)
+      setAudio(a)
+      setPlaying(true)
+    }
+    console.log(playing)
   }
 
   const longPressEvent = useLongPress(toggleSelect, clickNote)
@@ -64,7 +79,6 @@ const Note = ({ note }: any) => {
               <Button 
               id="playAudioBtn"
               onClick={playAudio}
-              onMouseUp={playAudio}
               color="orange" 
               variant="outline" 
               size="sm"
