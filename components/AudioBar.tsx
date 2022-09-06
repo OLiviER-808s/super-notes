@@ -6,12 +6,39 @@ import { useAudio } from "../providers/AudioProvider"
 const AudioBar = () => {
   const [audio, setAudio] = useAudio()
 
-  const [sliderValue, setSliderValue] = useState(0)
   const [playing, setPlaying] = useState(false)
+
+  const [timer, setTimer] = useState(null)
+  const [sliderValue, setSliderValue] = useState(0)
 
   const playPause = () => {
     if (audio.paused) audio.play()
     else audio.pause()
+  }
+
+  // slider stops moving automatically when user selects it
+  const pushSlider = () => {
+    setTimer(
+      setInterval(() => {
+        setSliderValue((audio.currentTime / audio.duration) * 100)
+      }, 500)
+    )
+  }
+
+  // slider stops moving automatically
+  const stopSlider = () => {
+    clearInterval(timer)
+    setTimer(null)
+  }
+
+  // user drags slider
+  const changeSliderVal = (val) => {
+    setSliderValue(val)
+  }
+  // user lets go of slider
+  const confirmSliderVal = (val) => {
+    audio.currentTime = (val / 100) * audio.duration
+    pushSlider()
   }
 
   useEffect(() => {
@@ -19,10 +46,8 @@ const AudioBar = () => {
       audio.addEventListener('loadeddata', () => {
         audio.play()
 
-        setInterval(() => {
-          setSliderValue((audio.currentTime / audio.duration) * 100)
-        }, 500)
-      })
+        pushSlider()
+      }, 500)
 
       audio.addEventListener('play', () => setPlaying(true))
       audio.addEventListener('pause', () => setPlaying(false))
@@ -55,7 +80,13 @@ const AudioBar = () => {
         </Group>
 
         <div>
-          <Slider size="sm" value={sliderValue} />
+          <Slider 
+          size="sm" 
+          value={sliderValue}
+          onMouseDown={stopSlider}
+          onChange={setSliderValue}
+          onChangeEnd={confirmSliderVal}
+          />
         </div>
       </Paper>
     </div>
