@@ -21,7 +21,7 @@ const AudioBar = () => {
     setTimer(
       setInterval(() => {
         setSliderValue((audio.currentTime / audio.duration) * 100)
-      }, 500)
+      }, 1000)
     )
   }
 
@@ -31,14 +31,18 @@ const AudioBar = () => {
     setTimer(null)
   }
 
-  // user drags slider
-  const changeSliderVal = (val) => {
-    setSliderValue(val)
-  }
-  // user lets go of slider
+  // user changes slider value
   const confirmSliderVal = (val) => {
     audio.currentTime = (val / 100) * audio.duration
     pushSlider()
+  }
+
+  const getLabel = (val) => {
+    const total = Math.floor(audio.duration * (val / 100))
+    const minutes = Math.floor(total / 60)
+    const seconds = total - minutes * 60
+    
+    return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
   useEffect(() => {
@@ -54,7 +58,7 @@ const AudioBar = () => {
     }
   }, [audio])
 
-  return audio ? (
+  return audio && (
     <div className="footer">
       <Paper p="md" withBorder>
         <Group position="apart" mb="xs">
@@ -86,12 +90,11 @@ const AudioBar = () => {
           onMouseDown={stopSlider}
           onChange={setSliderValue}
           onChangeEnd={confirmSliderVal}
+          label={getLabel}
           />
         </div>
       </Paper>
     </div>
-  ) : (
-    <></>
   )
 }
 
