@@ -11,6 +11,8 @@ const AudioBar = () => {
   const [timer, setTimer] = useState(null)
   const [sliderValue, setSliderValue] = useState(0)
 
+  const [loop, setLoop] = useState(false)
+
   const playPause = () => {
     if (audio.paused) audio.play()
     else audio.pause()
@@ -45,9 +47,15 @@ const AudioBar = () => {
     return `${minutes < 10 ? '0' : ''}${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
+  const toggleLoop = () => {
+    audio.loop = !loop
+    setLoop(!loop)
+  }
+
   useEffect(() => {
     if (audio) {
       audio.addEventListener('loadeddata', () => {
+        audio.loop = loop
         audio.play()
 
         pushSlider()
@@ -78,7 +86,7 @@ const AudioBar = () => {
             </ActionIcon>
           </Group>
 
-          <ActionIcon>
+          <ActionIcon color={loop ? 'blue' : 'gray'} variant={loop ? 'light' : 'subtle'} onClick={toggleLoop}>
             <IconRepeat />
           </ActionIcon>
         </Group>
