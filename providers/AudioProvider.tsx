@@ -7,7 +7,16 @@ export const useAudio = () => {
   const audio = useContext(AudioContext)
   const setAudio = useContext(SetAudioContext)
 
-  return [ audio, setAudio ]
+  const switchTrack = (src: string) => {
+    if (audio) {
+      audio.pause()
+      audio.src = src
+      audio.currentTime = 0
+    }
+    else setAudio(new Audio(src))
+  }
+
+  return [ audio, switchTrack ]
 }
 
 const AudioProvider = ({ children }) => {

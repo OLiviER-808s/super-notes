@@ -41,20 +41,23 @@ const Note = ({ note }: any) => {
       else audio.pause()
     }
     else {
-      const a = new Audio(note.audioRef)
-      setAudio(a)
+      setAudio(note.audioRef)
     }
   }
 
   useEffect(() => {
-    if (audio && audio && audio.src === note.audioRef) {
-      audio.addEventListener('play', () => setPlaying(true))
-      audio.addEventListener('pause', () => setPlaying(false))
+    if (audio) {
+      audio.addEventListener('play', () => {
+        if (audio.src === note.audioRef) setPlaying(true)
+      })
+      audio.addEventListener('pause', () => {
+        if (audio.src === note.audioRef) setPlaying(false)
+      })
+      audio.addEventListener('loadeddata', () => {
+        if (audio.src !== note.audioRef) setPlaying(false)
+      })
     }
-    else if (audio) {
-      audio.removeEventListener('play', () => {})
-      audio.removeEventListener('pause', () => {})
-      
+    else {
       setPlaying(false)
     }
   }, [audio])
