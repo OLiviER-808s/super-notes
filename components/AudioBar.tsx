@@ -1,9 +1,16 @@
 import { ActionIcon, Group, Paper, Slider, Title } from "@mantine/core"
 import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"
+import { NotesContext } from "../providers/NoteProvider"
 
 const AudioBar = () => {
+  const notes = useContext(NotesContext)
+  const notesWithAudio = notes.filter(n => !!n.audioRef)
+
+  const [note, setNote] = useState(null)
+  const idx = notesWithAudio.indexOf(note)
+
   const [audio, setAudio] = useAudio()
 
   const [playing, setPlaying] = useState(false)
@@ -52,9 +59,21 @@ const AudioBar = () => {
     setLoop(!loop)
   }
 
+  const playNext = () => {
+    setNote(notesWithAudio[idx + 1])
+    setAudio(notesWithAudio[idx + 1].audioRef)
+  }
+
+  const playPrev = () => {
+    setNote(notesWithAudio[idx - 1])
+    setAudio(notesWithAudio[idx - 1].audioRef)
+  }
+
   useEffect(() => {
     if (audio) {
       audio.addEventListener('loadeddata', () => {
+        setNote(notesWithAudio.filter(n => n.audioRef === audio.src)[0])
+
         audio.loop = loop
         audio.play()
 
@@ -73,7 +92,7 @@ const AudioBar = () => {
           <Title order={4}>Music</Title>
 
           <Group position="center">
-            <ActionIcon size="lg">
+            <ActionIcon size="lg" disabled={idx - 1 < 0} onClick={playPrev}>
               <IconPlayerTrackPrev />
             </ActionIcon>
 
@@ -81,7 +100,7 @@ const AudioBar = () => {
               { playing ? <IconPlayerPause /> : <IconPlayerPlay /> }
             </ActionIcon>
 
-            <ActionIcon size="lg">
+            <ActionIcon size="lg" disabled={idx + 1 === notesWithAudio.length} onClick={playNext}>
               <IconPlayerTrackNext />
             </ActionIcon>
           </Group>

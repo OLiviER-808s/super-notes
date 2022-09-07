@@ -13,7 +13,8 @@ export const useAudio = () => {
       audio.src = src
       audio.currentTime = 0
     }
-    else setAudio(new Audio(src))
+    else if (src) setAudio(new Audio(src))
+    else setAudio(null)
   }
 
   return [ audio, switchTrack ]
