@@ -15,8 +15,10 @@ const AudioBar = () => {
 
   const [playing, setPlaying] = useState(false)
 
-  const [timer, setTimer] = useState(null)
-  const [sliderValue, setSliderValue] = useState(0)
+  let timer = null
+  const [sliderSelected, setSliderSelected] = useState(false)
+  const [autoSliderVal, setAutoSliderVal] = useState(0)
+  const [userSliderVal, setUserSliderVal] = useState(0)
 
   const [loop, setLoop] = useState(false)
 
@@ -25,25 +27,23 @@ const AudioBar = () => {
     else audio.pause()
   }
 
-  // slider stops moving automatically when user selects it
   const pushSlider = () => {
-    setTimer(
-      setInterval(() => {
-        setSliderValue((audio.currentTime / audio.duration) * 100)
-      }, 1000)
-    )
+    timer = setInterval(() => {
+      setAutoSliderVal((audio.currentTime / audio.duration) * 100)
+    }, 1000)
   }
 
-  // slider stops moving automatically
-  const stopSlider = () => {
-    clearInterval(timer)
-    setTimer(null)
+  // user drags slider
+  const changeSliderVal = (val) => {
+    setSliderSelected(true)
+    setUserSliderVal(val)
   }
 
-  // user changes slider value
+  // user lest go of slider
   const confirmSliderVal = (val) => {
     audio.currentTime = (val / 100) * audio.duration
-    pushSlider()
+    setAutoSliderVal((audio.currentTime / audio.duration) * 100)
+    setSliderSelected(false)
   }
 
   const getLabel = (val) => {
@@ -77,7 +77,7 @@ const AudioBar = () => {
         audio.loop = loop
         audio.play()
 
-        pushSlider()
+        if (!timer) pushSlider()
       }, 500)
 
       audio.addEventListener('play', () => setPlaying(true))
@@ -113,9 +113,8 @@ const AudioBar = () => {
         <div>
           <Slider 
           size="sm" 
-          value={sliderValue}
-          onMouseDown={stopSlider}
-          onChange={setSliderValue}
+          value={sliderSelected ? userSliderVal : autoSliderVal}
+          onChange={changeSliderVal}
           onChangeEnd={confirmSliderVal}
           label={getLabel}
           />
