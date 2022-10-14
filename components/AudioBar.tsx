@@ -95,7 +95,7 @@ const AudioBar = () => {
           <Title order={4}>{ note?.title }</Title>
 
           <Group position="center">
-            <ActionIcon size="lg" disabled={!idx || idx - 1 < 0} onClick={playPrev}>
+            <ActionIcon size="lg" disabled={!idx || (idx - 1 < 0 && audio.currentTime < 3)} onClick={playPrev}>
               <IconPlayerTrackPrev />
             </ActionIcon>
 
