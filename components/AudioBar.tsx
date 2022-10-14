@@ -27,12 +27,6 @@ const AudioBar = () => {
     else audio.pause()
   }
 
-  const pushSlider = () => {
-    timer = setInterval(() => {
-      setAutoSliderVal((audio.currentTime / audio.duration) * 100)
-    }, 1000)
-  }
-
   // user drags slider
   const changeSliderVal = (val) => {
     setSliderSelected(true)
@@ -65,8 +59,13 @@ const AudioBar = () => {
   }
 
   const playPrev = () => {
-    setNote(notesWithAudio[idx - 1])
-    setAudio(notesWithAudio[idx - 1].audioRef)
+    if (audio.currentTime > 3) {
+      audio.currentTime = 0
+    }
+    else {
+      setNote(notesWithAudio[idx - 1])
+      setAudio(notesWithAudio[idx - 1].audioRef)
+    }
   }
 
   useEffect(() => {
@@ -77,7 +76,11 @@ const AudioBar = () => {
         audio.loop = loop
         audio.play()
 
-        if (!timer) pushSlider()
+        if (!timer) {
+          timer = setInterval(() => {
+            setAutoSliderVal((audio.currentTime / audio.duration) * 100)
+          }, 1000)
+        }
       }, 500)
 
       audio.addEventListener('play', () => setPlaying(true))
@@ -92,7 +95,7 @@ const AudioBar = () => {
           <Title order={4}>{ note?.title }</Title>
 
           <Group position="center">
-            <ActionIcon size="lg" disabled={idx - 1 < 0} onClick={playPrev}>
+            <ActionIcon size="lg" disabled={!idx || idx - 1 < 0} onClick={playPrev}>
               <IconPlayerTrackPrev />
             </ActionIcon>
 
@@ -100,7 +103,7 @@ const AudioBar = () => {
               { playing ? <IconPlayerPause /> : <IconPlayerPlay /> }
             </ActionIcon>
 
-            <ActionIcon size="lg" disabled={idx + 1 === notesWithAudio.length} onClick={playNext}>
+            <ActionIcon size="lg" disabled={(!idx && idx !== 0) || idx + 1 === notesWithAudio.length} onClick={playNext}>
               <IconPlayerTrackNext />
             </ActionIcon>
           </Group>

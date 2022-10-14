@@ -8,6 +8,7 @@ import Head from 'next/head'
 import OverlayProvider from '../providers/OverlayProvider'
 import { useEffect } from 'react'
 import { Workbox } from 'workbox-window'
+import AudioProvider from '../providers/AudioProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -48,13 +49,15 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         })} />
 
-        <PathProvider>
-          <NoteListProvider>
-            <OverlayProvider>
-              <Component {...pageProps} />
-            </OverlayProvider>
-          </NoteListProvider>
-        </PathProvider>
+        <AudioProvider>
+          <PathProvider>
+            <NoteListProvider>
+              <OverlayProvider>
+                <Component {...pageProps} />
+              </OverlayProvider>
+            </NoteListProvider>
+          </PathProvider>
+        </AudioProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   )

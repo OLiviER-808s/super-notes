@@ -1,4 +1,5 @@
 import { Center, Code, Paper, Text, Title } from "@mantine/core"
+import AudioPlayer from "./AudioPlayer"
 
 const NoteViewer = ({ note, colors }) => {
   return (
@@ -12,13 +13,7 @@ const NoteViewer = ({ note, colors }) => {
 
       {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
 
-      {note.audioRef && (
-        <Center>
-          <audio controls src={note.audioRef}>
-            Your browser does not support the <Code>audio</Code> element.
-          </audio>
-        </Center>
-      )}
+      {note.audioRef && <AudioPlayer src={note.audioRef} />}
 
       <Text>{ note.content }</Text>
     </Paper>

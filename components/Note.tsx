@@ -89,7 +89,6 @@ const Note = ({ note }: any) => {
           {note.audioRef && (
             <Center>
               <Button 
-              id="playAudioBtn"
               onClick={playPause}
               color="orange" 
               variant="outline" 

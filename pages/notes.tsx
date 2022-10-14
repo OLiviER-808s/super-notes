@@ -11,7 +11,6 @@ import { NotesContext, SetNotesContext } from "../providers/NoteProvider";
 import { PathContext } from "../providers/PathProvider";
 import NoteModel from "../models/Note.model";
 import AudioBar from "../components/AudioBar";
-import AudioProvider, { useAudio } from "../providers/AudioProvider";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
@@ -58,17 +57,15 @@ const Notes: NextPage = () => {
   ])
 
   return (
-    <AudioProvider>
-      <div>
-        <Toolbar />
-        <PathTracker />
+    <div>
+      <Toolbar />
+      <PathTracker />
 
-        <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
-        <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
+      <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
+      <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
 
-        <AudioBar />
-      </div>
-    </AudioProvider>
+      <AudioBar />
+    </div>
   )
 }
 
