@@ -11,6 +11,8 @@ import { NotesContext, SetNotesContext } from "../providers/NoteProvider";
 import { PathContext } from "../providers/PathProvider";
 import NoteModel from "../models/Note.model";
 import AudioBar from "../components/AudioBar";
+import { Center } from "@mantine/core";
+import { IconMoodNeutral } from "@tabler/icons";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
@@ -63,6 +65,18 @@ const Notes: NextPage = () => {
 
       <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
       <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
+
+      {notes.length == 0 && folders.length == 0 && (
+        <Center p="lg">
+          <div>
+            <Center>
+              <IconMoodNeutral size={32} />
+            </Center>
+
+            <h3>No notes here yet</h3>
+          </div>
+        </Center>
+      )}
 
       <AudioBar />
     </div>
