@@ -1,4 +1,4 @@
-import { ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
+import { Center, ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
 import { useState } from "react"
 import { changeNoteColors } from "../lib/auth"
 import { makeSolid, makeTransparent, removeDuplicates } from "../lib/helpers"
@@ -10,15 +10,11 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
   const { colorScheme } = useMantineColorScheme()
   const mainColor = colorScheme === 'dark' ? 'rgb(27, 28, 31)' : 'rgb(255, 255, 255)'
 
-  const changeColor = (e: string) => {
-    if (e && notes) {
-      const color = makeTransparent(e)
-    
-      setNotes(notes.map((note: NoteModel) => {
-        if (note.selected) return { ...note, color: color }
-        else return note
-      }))
-    }
+  const changeColor = (color: string) => {
+    setNotes(notes.map((note: NoteModel) => {
+      if (note.selected) return { ...note, color: color }
+      else return note
+    }))
   }
 
   const confirmChange = () => {
@@ -42,10 +38,14 @@ const ColorPopover = ({ children, notes, setNotes }: any) => {
       </Popover.Target>
       
       <Popover.Dropdown>
-        <ColorPicker 
-        format="rgb" 
-        onChange={changeColor} 
-        swatches={[mainColor, ...removeDuplicates(notes.map((n: NoteModel) => makeSolid(n.color)))]} />
+        <Center>
+          <ColorPicker 
+          format="rgb" 
+          size="md"
+          withPicker={false}
+          onChange={changeColor} 
+          swatches={[mainColor, '#f53b3b', '#f5d63b', '#95f53b', '#2af548', '#3bf5cc', '#3e3bf5', '#a13bf5', '#f53be2']} />
+        </Center>
       </Popover.Dropdown>
     </Popover>
   )

@@ -1,7 +1,7 @@
-import { Button, Center, Code, FileButton, Group, LoadingOverlay, Paper, Text, Textarea, TextInput, Title } from "@mantine/core"
+import { Button, Center, Code, FileButton, Group, LoadingOverlay, Paper, Textarea, TextInput } from "@mantine/core"
 import { IconMusic, IconPhoto, IconX } from "@tabler/icons"
 
-const NoteEditor = ({ note, setNote, colors, form, loading }) => {
+const NoteEditor = ({ form, loading }) => {
   const addImage = (file: File) => {
     if (file) {
       const reader = new FileReader()
@@ -35,16 +35,14 @@ const NoteEditor = ({ note, setNote, colors, form, loading }) => {
     shadow="xs" 
     radius="md" 
     p="md" 
-    withBorder 
-    style={colors}>
-      <div className="edit-note">
+    withBorder>
+      <div>
         <LoadingOverlay visible={loading} />
 
         <TextInput 
         { ...form.getInputProps('title') }
-        size="lg"
-        placeholder="Title" 
-        variant="unstyled" />
+        placeholder="Note title" 
+        label="Title" />
 
         {form.values.image && <img src={form.values.image} style={{'maxWidth': '100%'}}/>}
 
@@ -105,12 +103,11 @@ const NoteEditor = ({ note, setNote, colors, form, loading }) => {
         </Group>
 
         <Textarea 
-        pt={0}
-        { ...form.getInputProps('content') }
-        variant="unstyled" 
-        size="md"
-        autosize
-        placeholder="Content" />
+        { ...form.getInputProps('content') } 
+        minRows={5}
+        placeholder="Your content" 
+        label="Content"
+        autosize />
       </div>
     </Paper>
   )
