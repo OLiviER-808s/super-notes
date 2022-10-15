@@ -165,7 +165,7 @@ const AddNote = () => {
           data-autofocus
           autosize 
           minRows={5} 
-          placeholder="Your Content" 
+          placeholder="Your content" 
           label="Content"
           {...form.getInputProps('content')}/>
 

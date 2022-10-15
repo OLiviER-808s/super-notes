@@ -8,6 +8,7 @@ import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
 import NoteOverlay from "./NoteOverlay"
 import { useAudio } from "../providers/AudioProvider"
+import { contrast } from "../lib/contrast"
 
 const Note = ({ note }: any) => {
   const [ opened, setOpened ] = useOverlay(<NoteOverlay id={note.id} />)
@@ -20,6 +21,8 @@ const Note = ({ note }: any) => {
 
   const [ audio, setAudio ] = useAudio()
   const [ playing, setPlaying ] = useState(false)
+
+  const textColor = note.color ? contrast(note.color, 'rgba(192, 193, 197)') > contrast(note.color, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)' : null
 
   const toggleSelect = () => {
     setNotes(notes.map((n: NoteModel) => {
@@ -81,7 +84,7 @@ const Note = ({ note }: any) => {
       style={{'backgroundColor': note.color || null}}>
         <div>
           <div {...longPressEvent}>
-            <Title order={4}>{ note.title }</Title>
+            <Title order={4} style={{color: textColor}}>{ note.title }</Title>
 
             {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
           </div>
@@ -101,7 +104,7 @@ const Note = ({ note }: any) => {
           )}
 
           <div {...longPressEvent}>
-            <Text lineClamp={12}>{ note.content }</Text>
+            <Text lineClamp={12} style={{color: textColor}}>{ note.content }</Text>
           </div>
         </div>
         

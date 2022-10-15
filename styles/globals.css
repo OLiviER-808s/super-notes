@@ -77,12 +77,6 @@ a {
   left: 0;
 }
 
-.edit-note input {
-  font-weight: 700;
-  line-height: 1.45;
-  height: auto;
-}
-
 .footer {
   position: absolute;
   z-index: 3;
