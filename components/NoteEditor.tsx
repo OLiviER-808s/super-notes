@@ -40,6 +40,7 @@ const NoteEditor = ({ form, loading }) => {
         <LoadingOverlay visible={loading} />
 
         <TextInput 
+        py="md"
         { ...form.getInputProps('title') }
         placeholder="Note title" 
         label="Title" />
