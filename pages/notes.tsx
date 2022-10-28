@@ -54,8 +54,8 @@ const Notes: NextPage = () => {
   }, [user, path])
 
   useHotkeys([
-    ['mod+a', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: true })))],
-    ['mod+d', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: false })))]
+    ['mod+a', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: true })).filter(n => n.path === path))],
+    ['mod+d', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: false })).filter(n => n.path === path))]
   ])
 
   return (
