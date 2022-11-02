@@ -52,7 +52,7 @@ const SettingsMenu = () => {
         </List>
       </Modal>
 
-      <Menu shadow="lg" opened={opened} onClose={handlers.close} onOpen={handlers.open}>
+      <Menu withArrow shadow="lg" opened={opened} onClose={handlers.close} onOpen={handlers.open}>
         <Menu.Target>
           <ActionIcon size="xl">
             <IconSettings />
