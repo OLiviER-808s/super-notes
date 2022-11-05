@@ -2,6 +2,7 @@ import { Button, Center, Group, LoadingOverlay, PasswordInput, Text, TextInput, 
 import { useForm } from "@mantine/form"
 import { IconAt, IconLock } from "@tabler/icons"
 import { signInWithEmailAndPassword } from "firebase/auth"
+import Link from "next/link"
 import { useRouter } from "next/router"
 import { useState } from "react"
 import { auth } from "../lib/firebase"
@@ -52,7 +53,10 @@ const LoginTab = () => {
       )}
 
       <Group position="right">
-        <Button variant="subtle" color="cyan">Forgot Password?</Button>
+        <Link href="/forgot_password">
+          <Button variant="subtle" color="cyan">Forgot Password?</Button>
+        </Link>
+
         <Button color="indigo" type="submit">Login</Button>
       </Group>
     </form>
