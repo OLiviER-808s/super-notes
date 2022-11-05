@@ -33,7 +33,7 @@ const Home: NextPage = () => {
       <Paper shadow="md" p="md" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
         <Tabs defaultValue="about" variant="pills">
           <Tabs.List>
-            <Tabs.Tab value="about">About</Tabs.Tab>
+            <Tabs.Tab value="about">Home</Tabs.Tab>
             <Tabs.Tab value="signup">Signup</Tabs.Tab>
             <Tabs.Tab value="login">Login</Tabs.Tab>
           </Tabs.List>
