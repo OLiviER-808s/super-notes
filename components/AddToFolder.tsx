@@ -1,7 +1,7 @@
 import { ActionIcon, Modal, Select, Group, Text, Button } from "@mantine/core"
 import { IconFolderPlus } from "@tabler/icons"
 import { collection, doc, getDocs, query, where, writeBatch } from "firebase/firestore"
-import { forwardRef, useContext, useEffect, useState } from "react"
+import { forwardRef, useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../lib/firebase"
 import FolderModel from "../models/Folder.model"

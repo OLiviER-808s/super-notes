@@ -1,7 +1,7 @@
 import { useHotkeys } from "@mantine/hooks";
 import { collection, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import { NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteFeed from "../components/NoteFeed";
 import PathTracker from "../components/PathTracker";

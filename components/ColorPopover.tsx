@@ -1,7 +1,6 @@
 import { Center, ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
 import { useState } from "react"
 import { changeItemColors } from "../lib/auth"
-import NoteModel from "../models/Note.model"
 import { useItems } from "../providers/ItemProvider"
 
 const ColorPopover = ({ children }: any) => {

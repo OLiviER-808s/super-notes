@@ -1,6 +1,6 @@
 import { ActionIcon, Group, Paper, Slider, Title } from "@mantine/core"
 import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"
 import { useItems } from "../providers/ItemProvider"
 

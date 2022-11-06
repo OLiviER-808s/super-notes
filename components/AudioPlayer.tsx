@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Center, Group, Slider, Space } from "@mantine/core"
+import { ActionIcon, Button, Center, Slider, Space } from "@mantine/core"
 import { IconPlayerPause, IconPlayerPlay } from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"

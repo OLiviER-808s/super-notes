@@ -1,4 +1,4 @@
-import { ActionIcon, Button, Center, Code, Container, Group, Paper, Text, Title } from "@mantine/core"
+import { ActionIcon, Button, Center, Container, Group, Text } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash, IconX } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"

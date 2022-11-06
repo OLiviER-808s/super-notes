@@ -1,7 +1,7 @@
 import { Button, Center, Code, FileButton, Group, LoadingOverlay, Modal, Textarea, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconMusic, IconNote, IconPhoto, IconX } from "@tabler/icons"
-import { useContext, useRef, useState } from "react"
+import { useState } from "react"
 import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
@@ -96,7 +96,7 @@ const AddNote = () => {
 
   return (
     <>
-      <Modal overflow="outside" opened={opened} onClose={closeModal} title="Create A New Note">
+      <Modal overflow="outside" opened={opened} onClose={closeModal} title="Create A New Note" size="lg">
         <LoadingOverlay visible={loading} />
 
         <form className="form" onSubmit={form.onSubmit(handleSubmit)}>

@@ -1,4 +1,4 @@
-import { Center, Title, PasswordInput, Group, Button, TextInput, LoadingOverlay } from "@mantine/core"
+import { PasswordInput, Group, Button, TextInput, LoadingOverlay } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { IconAt, IconLock } from "@tabler/icons"
 import { createUserWithEmailAndPassword } from "firebase/auth"

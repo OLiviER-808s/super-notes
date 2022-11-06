@@ -1,4 +1,4 @@
-import { Center, Code, Paper, Text, Title } from "@mantine/core"
+import { Paper, Text, Title } from "@mantine/core"
 import AudioPlayer from "./AudioPlayer"
 
 const NoteViewer = ({ note, colors }) => {

@@ -1,6 +1,6 @@
 import { Center } from "@mantine/core"
 import { useElementSize } from "@mantine/hooks"
-import { useContext, useEffect } from "react"
+import { useEffect } from "react"
 import Masonry from "react-masonry-css"
 import { useItems } from "../providers/ItemProvider"
 import { useOverlay } from "../providers/OverlayProvider"
