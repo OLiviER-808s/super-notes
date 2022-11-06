@@ -4,8 +4,9 @@ import { collection, doc, getDocs, query, where, writeBatch } from "firebase/fir
 import { forwardRef, useContext, useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db } from "../lib/firebase"
-import { NotesContext } from "../providers/NoteProvider"
+import FolderModel from "../models/Folder.model"
 import NoteModel from "../models/Note.model"
+import { useItems } from "../providers/ItemProvider"
 
 const SelectItem = forwardRef<HTMLDivElement, any>(
   ({ label, description, ...others }: any, ref) => (
@@ -37,7 +38,7 @@ const AddToFolder = ({ buttonHover }) => {
 
   const [user] = useAuthState(auth)
 
-  const selectedNotes = useContext(NotesContext).filter((note: NoteModel) => note.selected)
+  const { selectedItems } = useItems()
 
   const getFolders = async () => {
     if (opened && user) {
@@ -58,8 +59,8 @@ const AddToFolder = ({ buttonHover }) => {
     if (selectedFolder) {
       const batch = writeBatch(db)
 
-      selectedNotes.forEach((n: NoteModel) => {
-        const ref = doc(db, `notes/${n.id}`)
+      selectedItems.forEach((item: NoteModel | FolderModel) => {
+        const ref = doc(db, `${item.type}s/${item.id}`)
         batch.update(ref, { path: selectedFolder })
       })
 

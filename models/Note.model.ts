@@ -12,4 +12,5 @@ export default interface NoteModel {
   id?: string;
   color?: string;
   selected?: boolean;
+  type?: 'folder' | 'note';
 }

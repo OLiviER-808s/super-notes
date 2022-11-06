@@ -5,13 +5,13 @@ import { addDoc, collection, doc, getDocs, query, where } from "firebase/firesto
 import { useContext, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db, timestamp } from "../lib/firebase"
-import { PathContext } from "../providers/PathProvider"
+import { usePath } from "../providers/PathProvider"
 
 const AddFolder = () => {
   const [opened, setOpened] = useState(false)
 
   const [name, setName] = useInputState('')
-  const path = useContext(PathContext)
+  const { path } = usePath()
   const [user] = useAuthState(auth)
 
   const [error, setError] = useState(false)

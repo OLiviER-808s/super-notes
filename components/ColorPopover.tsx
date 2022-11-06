@@ -1,27 +1,20 @@
 import { Center, ColorPicker, Popover, useMantineColorScheme } from "@mantine/core"
 import { useState } from "react"
-import { changeNoteColors } from "../lib/auth"
-import { makeSolid, makeTransparent, removeDuplicates } from "../lib/helpers"
+import { changeItemColors } from "../lib/auth"
 import NoteModel from "../models/Note.model"
+import { useItems } from "../providers/ItemProvider"
 
-const ColorPopover = ({ children, notes, setNotes }: any) => {
+const ColorPopover = ({ children }: any) => {
+  const { selectedItems, changeColor } = useItems()
+
   const [opened, setOpened] = useState(false)
   
   const { colorScheme } = useMantineColorScheme()
   const mainColor = colorScheme === 'dark' ? 'rgb(27, 28, 31)' : 'rgb(255, 255, 255)'
 
-  const changeColor = (color: string) => {
-    setNotes(notes.map((note: NoteModel) => {
-      if (note.selected) return { ...note, color: color }
-      else return note
-    }))
-  }
-
   const confirmChange = () => {
-    const selectedNotes = notes.filter((n: NoteModel) => n.selected)
-    const color = selectedNotes[0].color
-
-    changeNoteColors(selectedNotes, color)
+    const color = selectedItems[0].color
+    changeItemColors(selectedItems, color)
 
     setOpened(false)
   }

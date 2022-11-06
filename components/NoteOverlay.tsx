@@ -2,7 +2,7 @@ import { ActionIcon, Button, Center, Code, Container, Group, Paper, Text, Title 
 import { useForm } from "@mantine/form"
 import { IconArrowBigLeft, IconArrowBigRight, IconPalette, IconPencil, IconPinned, IconTrash, IconX } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
-import { deleteNotes, editNote, pinNotes, uploadAudio, uploadImage } from "../lib/auth"
+import { deleteItems, editNote, pinItems, uploadAudio, uploadImage } from "../lib/auth"
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 import NoteModel from "../models/Note.model"
@@ -58,12 +58,12 @@ const NoteOverlay = ({ id }) => {
   }, [note])
 
   const deleteNote = () => {
-    deleteNotes([ note ])
+    deleteItems([ note ])
     setOpened(false)
   }
 
   const pinNote = () => {
-    pinNotes([ note ])
+    pinItems([ note ])
   }
 
   const moveLeft = () => {
