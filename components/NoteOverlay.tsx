@@ -6,7 +6,7 @@ import { deleteItems, editNote, pinItems, uploadAudio, uploadImage } from "../li
 import { contrast } from "../lib/contrast"
 import { makeSolid } from "../lib/helpers"
 import NoteModel from "../models/Note.model"
-import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
+import { useItems } from "../providers/ItemProvider"
 import { useOverlay } from "../providers/OverlayProvider"
 import ColorPopover from "./ColorPopover"
 import NoteEditor from "./NoteEditor"
@@ -16,8 +16,7 @@ const NoteOverlay = ({ id }) => {
   const [opened, setOpened] = useOverlay(null)
   const [loading, setLoading] = useState(false)
 
-  const notes = useContext(NotesContext)
-  const setNotes = useContext(SetNotesContext)
+  const { notes, selectItem } = useItems()
 
   const [note, setNote] = useState<any>(notes.filter(n => n.id === id)[0])
   const [idx, setIdx] = useState(notes.indexOf(note))
@@ -42,10 +41,7 @@ const NoteOverlay = ({ id }) => {
 
   useEffect(() => {
     if (!note.selected) {
-      setNotes(prev => prev.map(n => {
-        if (n.id === note.id) return { ...n, selected: true }
-        else return { ...n, selected: false }
-      }))
+      selectItem(id)
     }
 
     if (note.color) {
@@ -121,7 +117,7 @@ const NoteOverlay = ({ id }) => {
               )}
 
               {editMode ? 
-              <NoteEditor note={note} form={form} colors={colors} setNote={setNote} loading={loading} /> : 
+              <NoteEditor form={form} loading={loading} /> : 
               <NoteViewer note={note} colors={colors} />}
             </div>
             
@@ -138,7 +134,7 @@ const NoteOverlay = ({ id }) => {
                 <IconPencil />
               </ActionIcon>
 
-              <ColorPopover notes={notes} setNotes={setNotes}>
+              <ColorPopover>
                 <ActionIcon color="orange" size="xl">
                   <IconPalette />
                 </ActionIcon>
