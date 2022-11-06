@@ -53,8 +53,8 @@ const Notes: NextPage = () => {
       <Toolbar />
       <PathTracker />
 
-      <NoteFeed items={notes.filter((n: NoteModel) => n.pinned)} />
-      <NoteFeed items={[...folders, ...notes.filter((n: NoteModel) => !n.pinned)]} />
+      <NoteFeed items={[...folders.filter((n: NoteModel) => n.pinned), ...notes.filter((n: NoteModel) => n.pinned)]} />
+      <NoteFeed items={[...folders.filter((n: NoteModel) => !n.pinned), ...notes.filter((n: NoteModel) => !n.pinned)]} />
 
       {notes.length == 0 && folders.length == 0 && (
         <Center p="lg">
