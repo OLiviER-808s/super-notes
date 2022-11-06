@@ -7,21 +7,19 @@ import NoteFeed from "../components/NoteFeed";
 import PathTracker from "../components/PathTracker";
 import Toolbar from "../components/Toolbar";
 import { auth, db } from "../lib/firebase";
-import { NotesContext, SetNotesContext } from "../providers/NoteProvider";
-import { PathContext } from "../providers/PathProvider";
+import { usePath } from "../providers/PathProvider";
 import NoteModel from "../models/Note.model";
 import AudioBar from "../components/AudioBar";
 import { Center } from "@mantine/core";
 import { IconMoodNeutral } from "@tabler/icons";
+import { useItems } from "../providers/ItemProvider";
 
 const Notes: NextPage = () => {
   const [user] = useAuthState(auth)
 
-  const setNotes = useContext(SetNotesContext)
-  const notes = useContext(NotesContext)
+  const { notes, folders, updateItems, selectAll, deselectAll } = useItems()
 
-  const [folders, setFolders] = useState<Array<any>>([])
-  const path = useContext(PathContext)
+  const { path } = usePath()
 
   useEffect(() => {
     if (user) {
@@ -31,13 +29,7 @@ const Notes: NextPage = () => {
       orderBy('createdAt', 'desc'))
 
       onSnapshot(noteQuery, (snap) => {
-        setNotes(prev => {
-          return snap.docs.map(doc => {
-            const selected = prev.filter(n => n.id === doc.id)[0]?.selected || false
-
-            return { ...doc.data(), id: doc.id, selected: selected }
-          })
-        })
+        updateItems(snap.docs, 'note')
       })
 
       // gets folders
@@ -46,16 +38,14 @@ const Notes: NextPage = () => {
       orderBy('createdAt', 'desc'))
 
       onSnapshot(folderQuery, (snap) => {
-        setFolders(snap.docs.map(doc => {
-          return { ...doc.data(), id: doc.id }
-        }))
+        updateItems(snap.docs, 'folder')
       })
     }
   }, [user, path])
 
   useHotkeys([
-    ['mod+a', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: true })).filter(n => n.path === path))],
-    ['mod+d', () => setNotes(notes.map((n: NoteModel) => ({ ...n, selected: false })).filter(n => n.path === path))]
+    ['mod+a', selectAll],
+    ['mod+d', deselectAll]
   ])
 
   return (

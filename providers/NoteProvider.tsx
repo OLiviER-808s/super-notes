@@ -1,7 +1,7 @@
 import { createContext, useState } from "react"
 
-export const NotesContext = createContext<any>(null)
-export const SetNotesContext = createContext<any>(null)
+const NotesContext = createContext<any>(null)
+const SetNotesContext = createContext<any>(null)
 
 const NoteListProvider = ({ children }: any) => {
   const [selectedNotes, setSelectedNotes] = useState([])

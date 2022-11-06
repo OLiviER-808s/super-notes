@@ -9,6 +9,7 @@ import OverlayProvider from '../providers/OverlayProvider'
 import { useEffect } from 'react'
 import { Workbox } from 'workbox-window'
 import AudioProvider from '../providers/AudioProvider'
+import ItemsProvider from '../providers/ItemProvider'
 
 function MyApp({ Component, pageProps }: AppProps) {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
@@ -51,11 +52,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 
         <AudioProvider>
           <PathProvider>
-            <NoteListProvider>
+            <ItemsProvider>
               <OverlayProvider>
                 <Component {...pageProps} />
               </OverlayProvider>
-            </NoteListProvider>
+            </ItemsProvider>
           </PathProvider>
         </AudioProvider>
       </MantineProvider>

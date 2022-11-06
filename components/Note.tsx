@@ -1,14 +1,14 @@
 import { ActionIcon, Button, Center, Group, Paper, Text, Title } from "@mantine/core"
 import { useHover, useViewportSize } from "@mantine/hooks"
 import { IconCheck, IconPlayerPause, IconPlayerPlay, IconX } from "@tabler/icons"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import useLongPress from "../hooks/useLongPress"
-import { NotesContext, SetNotesContext } from "../providers/NoteProvider"
 import NoteModel from "../models/Note.model"
 import { useOverlay } from "../providers/OverlayProvider"
 import NoteOverlay from "./NoteOverlay"
 import { useAudio } from "../providers/AudioProvider"
 import { contrast } from "../lib/contrast"
+import { useItems } from "../providers/ItemProvider"
 
 const Note = ({ note }: any) => {
   const [ opened, setOpened ] = useOverlay(<NoteOverlay id={note.id} />)
@@ -16,27 +16,19 @@ const Note = ({ note }: any) => {
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
 
-  const notes = useContext(NotesContext)
-  const setNotes = useContext(SetNotesContext)
+  const { notes, deselectItem, toggleItemSelect } = useItems()
 
   const [ audio, setAudio ] = useAudio()
   const [ playing, setPlaying ] = useState(false)
 
   const textColor = note.color ? contrast(note.color, 'rgba(192, 193, 197)') > contrast(note.color, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)' : null
 
-  const toggleSelect = () => {
-    setNotes(notes.map((n: NoteModel) => {
-      if (n.id === note.id) return { ...note, selected: !note.selected }
-      else return n
-    }))
-  }
-
   const clickNote = () => {
     if (notes.filter((n: NoteModel) => n.selected).length === 0) setOpened(true)
-    toggleSelect()
+    toggleItemSelect(note.id)
   }
 
-  const longPressEvent = useLongPress(toggleSelect, clickNote)
+  const longPressEvent = useLongPress(() => toggleItemSelect(note.id), clickNote)
 
   const playPause = () => {
     if (audio && audio.src === note.audioRef) {
@@ -67,10 +59,7 @@ const Note = ({ note }: any) => {
 
   useEffect(() => {
     if (!opened) {
-      setNotes(notes.map((n: NoteModel) => {
-        if (n.id === note.id) return { ...note, selected: false }
-        else return n
-      }))
+      deselectItem(note.id)
     }
   }, [opened])
 
@@ -110,7 +99,7 @@ const Note = ({ note }: any) => {
         
         {hovered && width > 800 && (
           <Group position="right" spacing="xs">
-            <ActionIcon color="blue" size="sm" variant="filled" onClick={toggleSelect}>
+            <ActionIcon color="blue" size="sm" variant="filled" onClick={() => toggleItemSelect(note.id)}>
               {note.selected ? <IconX /> : <IconCheck />}
             </ActionIcon>
           </Group>

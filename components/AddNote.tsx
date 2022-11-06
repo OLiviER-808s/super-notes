@@ -6,7 +6,7 @@ import { auth, db, timestamp } from "../lib/firebase"
 import { useAuthState } from "react-firebase-hooks/auth";
 import NoteModel from "../models/Note.model"
 import { addDoc, collection } from "firebase/firestore"
-import { PathContext } from "../providers/PathProvider"
+import { usePath } from "../providers/PathProvider"
 import { useHotkeys } from "@mantine/hooks"
 import { uploadAudio, uploadImage } from "../lib/auth"
 
@@ -14,7 +14,7 @@ const AddNote = () => {
   const [opened, setOpened] = useState(false)
 
   const [user] = useAuthState(auth)
-  const path = useContext(PathContext)
+  const { path } = usePath()
 
   const [loading, setLoading] = useState(false)
 

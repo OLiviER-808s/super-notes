@@ -3,44 +3,44 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import NoteModel from "../models/Note.model"
 import { db, storage, timestamp } from "./firebase"
 
-export const deleteNotes = async (notes: NoteModel[]) => {
+export const deleteItems = async (items) => {
   const batch = writeBatch(db)
 
-  notes.forEach(note => {
-    const ref = doc(db, `notes/${note.id}`)
+  items.forEach(item => {
+    const ref = doc(db, `${item.type}s/${item.id}`)
     batch.delete(ref)
   })
 
   await batch.commit()
 }
 
-export const changeNoteColors = async (notes: NoteModel[], color: string) => {
+export const changeItemColors = async (items, color: string) => {
   const batch = writeBatch(db)
 
-  notes.forEach(note => {
-    const ref = doc(db, `notes/${note.id}`)
+  items.forEach(item => {
+    const ref = doc(db, `${item.type}s/${item.id}`)
     batch.update(ref, { color: color })
   })
 
   await batch.commit()
 }
 
-export const pinNotes = async (notes: NoteModel[]) => {
+export const pinItems = async (items) => {
   const batch = writeBatch(db)
 
-  notes.forEach(note => {
-    const ref = doc(db, `notes/${note.id}`)
-    batch.update(ref, { pinned: !note.pinned })
+  items.forEach(item => {
+    const ref = doc(db, `${item.type}s/${item.id}`)
+    batch.update(ref, { pinned: !item.pinned })
   })
 
   await batch.commit()
 }
 
-export const addNotesToFolder = async (notes: NoteModel[], path: string) => {
+export const addItemsToFolder = async (items, path: string) => {
   const batch = writeBatch(db)
 
-  notes.forEach(note => {
-    const ref = doc(db, `notes/${note.id}`)
+  items.forEach(item => {
+    const ref = doc(db, `${item}s/${item.id}`)
     batch.update(ref, { path: path })
   })
 

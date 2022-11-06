@@ -1,7 +1,14 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
-export const PathContext = createContext<any>('notes')
-export const SetPathContext = createContext<any>(null)
+const PathContext = createContext<any>('notes')
+const SetPathContext = createContext<any>(null)
+
+export const usePath = () => {
+  const path = useContext(PathContext)
+  const setPath = useContext(SetPathContext)
+
+  return { path, setPath }
+}
 
 const PathProvider = ({ children }: any) => {
   const [path, setPath] = useState('notes')

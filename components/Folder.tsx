@@ -1,12 +1,12 @@
 import { ActionIcon, Button, Group, Modal, Paper, Stack, Text, Title } from "@mantine/core"
 import { useHover, useViewportSize } from "@mantine/hooks"
-import { IconFolder, IconTrash } from "@tabler/icons"
-import { useContext, useState } from "react"
+import { IconCheck, IconFolder, IconX } from "@tabler/icons"
+import { useState } from "react"
 import { deleteFolder } from "../lib/auth"
-import { SetPathContext } from "../providers/PathProvider"
+import { usePath } from "../providers/PathProvider"
 
 const Folder = ({ folder }: any) => {
-  const setPath = useContext(SetPathContext)
+  const { setPath } = usePath()
   const [opened, setOpened] = useState(false)
 
   const { ref, hovered } = useHover()
@@ -39,10 +39,10 @@ const Folder = ({ folder }: any) => {
           <Title order={4}>{ folder.name }</Title>
         </Stack>
         
-        {(hovered || width < 800) && (
+        {hovered && width > 800 && (
           <Group position="right">
-            <ActionIcon color="red" size="sm" onClick={() => setOpened(true)}>
-              <IconTrash />
+            <ActionIcon color="blue" size="sm" variant="filled">
+              {folder.selected ? <IconX /> : <IconCheck />}
             </ActionIcon>
           </Group>
         )}

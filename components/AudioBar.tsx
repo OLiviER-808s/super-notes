@@ -2,11 +2,10 @@ import { ActionIcon, Group, Paper, Slider, Title } from "@mantine/core"
 import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
 import { useContext, useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"
-import { NotesContext } from "../providers/NoteProvider"
+import { useItems } from "../providers/ItemProvider"
 
 const AudioBar = () => {
-  const notes = useContext(NotesContext)
-  const notesWithAudio = notes.filter(n => !!n.audioRef)
+  const { notesWithAudio } = useItems()
 
   const [note, setNote] = useState(null)
   const idx = notesWithAudio.indexOf(note)

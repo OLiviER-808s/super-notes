@@ -2,7 +2,7 @@ import { Center } from "@mantine/core"
 import { useElementSize } from "@mantine/hooks"
 import { useContext, useEffect } from "react"
 import Masonry from "react-masonry-css"
-import { SetNotesContext } from "../providers/NoteProvider"
+import { useItems } from "../providers/ItemProvider"
 import { useOverlay } from "../providers/OverlayProvider"
 import Folder from "./Folder"
 import Note from "./Note"
@@ -11,11 +11,11 @@ const NoteFeed = ({ items }: any) => {
   const { ref, width } = useElementSize()
 
   const [ overlayOpen ] = useOverlay(null)
-  const setNotes = useContext(SetNotesContext)
+  const { deselectAll } = useItems()
 
   useEffect(() => {
     if (!overlayOpen) {
-      setNotes(prev => prev.map((note) => ({ ...note, selected: false })))
+      deselectAll()
     }
   }, [overlayOpen])
 
@@ -32,7 +32,7 @@ const NoteFeed = ({ items }: any) => {
         {items.map((item: any) => {
           return (
             <div key={item.id}>
-              { !item.name ? <Note note={item} /> : <Folder folder={item} /> }
+              { item.type === 'note' ? <Note note={item} /> : <Folder folder={item} /> }
             </div>
           )
         })}
