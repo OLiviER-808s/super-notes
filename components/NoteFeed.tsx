@@ -26,7 +26,7 @@ const NoteFeed = ({ items }: any) => {
   }
 
   return items && (
-    <Center ref={ref} style={{'marginBottom': '1em'}}>
+    <Center ref={ref}>
       <Masonry breakpointCols={breakpointConfig} 
       className="my-masonry-grid" columnClassName="my-masonry-grid_column">
         {items.map((item: any) => {

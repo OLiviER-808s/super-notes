@@ -24,8 +24,8 @@ const Toolbar = () => {
   }
 
   return (
-    <div style={{'marginBottom': '1.5em'}}>
-      <Center>
+    <div>
+      <Center pt="md" pb="lg">
         <div style={{'maxWidth': '840px', 'width': '100%'}}>
           <Group spacing="xs">
             {(selectedItems.length === 0 || overlayOpen) && (

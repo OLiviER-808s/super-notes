@@ -103,6 +103,16 @@ const AddNote = () => {
           <TextInput placeholder="Note title" label="Title" autoFocus 
           {...form.getInputProps('title')}/>
 
+          {form.values.image && <img style={{'maxWidth': '100%'}} src={form.values.image}/>}
+
+          {form.values.audio && (
+            <Center>
+              <audio controls src={form.values.audio}>
+                Your browser does not support the <Code>audio</Code> element.
+              </audio>
+            </Center>
+          )}
+
           <Group position="center" spacing="xl" py="xs">
             {!form.values.image ? (
               <FileButton onChange={addImage} accept="image/png,image/jpeg">
@@ -150,16 +160,6 @@ const AddNote = () => {
               >Remove Audio</Button>
             )}
           </Group>
-
-          {form.values.image && <img style={{'maxWidth': '100%'}} src={form.values.image}/>}
-
-          {form.values.audio && (
-            <Center>
-              <audio controls src={form.values.audio}>
-                Your browser does not support the <Code>audio</Code> element.
-              </audio>
-            </Center>
-          )}
 
           <Textarea 
           data-autofocus

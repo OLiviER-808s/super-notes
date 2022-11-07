@@ -6,7 +6,7 @@ const PathTracker = () => {
   const { path, setPath } = usePath()
 
   return (
-    <Center>
+    <Center pb="lg">
       <Group spacing="xs" style={{'maxWidth': '840px', 'width': '100%'}}>
         {path !== 'notes' && path.split('/').map((d, idx, arr) => {
           return (

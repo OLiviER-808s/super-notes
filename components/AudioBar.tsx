@@ -90,8 +90,10 @@ const AudioBar = () => {
   return audio && (
     <div className="footer">
       <Paper p="md" withBorder style={{'backgroundColor': note?.color || null}}>
+        <Title order={4}>{ note?.title }</Title>
+
         <Group position="apart" mb="xs">
-          <Title order={4}>{ note?.title }</Title>
+          <div style={{'width': '26px'}}></div>
 
           <Group position="center">
             <ActionIcon size="lg" disabled={!idx || (idx - 1 < 0 && audio.currentTime < 3)} onClick={playPrev}>
