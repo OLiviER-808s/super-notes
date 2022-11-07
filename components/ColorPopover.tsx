@@ -12,7 +12,7 @@ const ColorPopover = ({ children }: any) => {
   const mainColor = colorScheme === 'dark' ? 'rgb(27, 28, 31)' : 'rgb(255, 255, 255)'
 
   const confirmChange = () => {
-    const color = selectedItems[0].color
+    const color = selectedItems[0].color || null
     changeItemColors(selectedItems, color)
 
     setOpened(false)
