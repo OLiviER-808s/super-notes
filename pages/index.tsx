@@ -24,11 +24,9 @@ const Home: NextPage = () => {
 
   return (
     <div className='column'>
-      <div style={{'marginBottom': '1.5em'}}>
-        <Button onClick={loginWithGoogle} variant="outline" color="gray" leftIcon={<img src='google.svg'></img>}>
-          Login With Google
-        </Button>
-      </div>
+      <Button my="xl" onClick={loginWithGoogle} variant="outline" color="gray" leftIcon={<img src='google.svg'></img>}>
+        Login With Google
+      </Button>
 
       <Paper shadow="md" p="md" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
         <Tabs defaultValue="about" variant="pills">
