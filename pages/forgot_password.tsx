@@ -36,7 +36,7 @@ const Home: NextPage = () => {
 
   return (
     <div className="column">
-      <Paper shadow="md" p="md" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
+      <Paper shadow="md" p="md" my="xl" withBorder style={{'width': '100%', 'maxWidth': '540px'}}>
         <Title order={4} mb="md">Forgot Password?</Title>
 
         {!emailSent ? (
