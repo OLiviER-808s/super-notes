@@ -1,4 +1,5 @@
 import { Overlay } from "@mantine/core";
+import { useElementSize } from "@mantine/hooks";
 import { createContext, useContext, useState } from "react";
 
 const OverlayContext = createContext<any>(null)
@@ -19,8 +20,10 @@ export const useOverlay = (children): Array<any> => {
 
 const OverlayProvider = ({ children }) => {
   const [content, setContent] = useState(null)
+  const { ref, height } = useElementSize()
 
   const closeOverlay = (e) => {
+    console.log(height)
     if (e.target.dataset.closeOverlay) setContent(null)
   }
 
@@ -29,8 +32,16 @@ const OverlayProvider = ({ children }) => {
       <OverlaySetContext.Provider value={setContent}>
         {content && (
           <>
-            <Overlay opacity={0.75} color="black" zIndex={5} onClick={() => setContent(null)} />
-            <div className="overlay-inner" data-close-overlay onClick={closeOverlay}>{ content }</div>
+            <Overlay 
+            opacity={0.75} 
+            color="black" 
+            style={{height: height, minHeight: '100%'}} 
+            zIndex={5}
+            onClick={() => setContent(null)} />
+
+            <div ref={ref} className="overlay-inner" data-close-overlay onClick={closeOverlay}>
+              { content }
+            </div>
           </>
         )}
 
