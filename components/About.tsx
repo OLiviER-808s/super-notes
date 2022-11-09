@@ -10,9 +10,9 @@ const About = () => {
       <Space h="xs" />
 
       <Text>
-        This is a notes app I made using Next.js and Firebase as a demo to put on my portfolio. <br />
-        Feel free to explore the app by signing up with google or use a fake mail in the signup tab. Also check out my
-        portfolio using the button bellow:
+        This is a notes app I made using Next.js and Firebase as a demo to showcase my web development and design skills. <br />
+        Feel free to explore the app by signing up with google or use a fake email in the signup tab. Also check out my
+        full portfolio using the button bellow:
       </Text>
 
       <Space h="xs" />
