@@ -73,7 +73,7 @@ const Note = ({ note }: any) => {
       style={{'backgroundColor': note.color || null}}>
         <div>
           <div {...longPressEvent}>
-            <Title order={4} style={{color: textColor}}>{ note.title }</Title>
+            <Title order={4} style={{ color: textColor, wordWrap: 'break-word'}}>{ note.title }</Title>
 
             {note.imageRef && <img src={note.imageRef} alt={note.imagePath} style={{'maxWidth': '100%'}}/>}
           </div>
