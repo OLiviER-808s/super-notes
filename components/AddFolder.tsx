@@ -5,19 +5,27 @@ import { addDoc, collection, getDocs, query, where } from "firebase/firestore"
 import { useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { auth, db, timestamp } from "../lib/firebase"
+import { useItems } from "../providers/ItemProvider"
 import { usePath } from "../providers/PathProvider"
 
 const AddFolder = () => {
   const [opened, setOpened] = useState(false)
 
   const [name, setName] = useInputState('')
+
   const { path } = usePath()
+  const { folders } = useItems()
   const [user] = useAuthState(auth)
 
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
 
   useHotkeys([['shift+f', () => setOpened(true)]])
+
+  const onClose = () => {
+    setOpened(false)
+    setName('')
+  }
 
   const handleSubmit = async () => {
     if (name) {
@@ -31,12 +39,12 @@ const AddFolder = () => {
       }
       const ref = collection(db, 'folders')
 
-      // checks to see if folder with that name already exists
-      const q = query(ref, where('path', '==', path), where('name', '==', name), where('uid', '==', user?.uid))
-      const empty = (await getDocs(q)).empty
+      // checks to see if folder with that name already exists in path
+      const empty = !folders.find(f => f.name == name)
 
       if (empty) {
         addDoc(ref, data)
+
         setOpened(false)
         setLoading(false)
       }
@@ -49,7 +57,7 @@ const AddFolder = () => {
 
   return (
     <>
-      <Modal opened={opened} onClose={() => setOpened(false)} title="Add Folder">
+      <Modal opened={opened} onClose={onClose} title="Add Folder">
         {error && (
           <Alert icon={<IconAlertCircle size={16} />} title="Oops..." color="red">
             Looks like you already have a folder with that name in this directory.
