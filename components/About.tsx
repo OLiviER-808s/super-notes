@@ -18,7 +18,7 @@ const About = () => {
       <Space h="xs" />
 
       <Group position="right">
-        <Link href="#">
+        <Link href="https://www.upwork.com/freelancers/~01dd09c3a20dad7abc">
           <Button 
           size="md" 
           variant="gradient" 
