@@ -6,13 +6,18 @@ import { useItems } from "../providers/ItemProvider"
 import { usePath } from "../providers/PathProvider"
 
 const Folder = ({ folder }: any) => {
-  const { toggleItemSelect } = useItems()
+  const { selectedItems ,toggleItemSelect } = useItems()
   const { setPath } = usePath()
 
   const { ref, hovered } = useHover()
   const { width } = useViewportSize()
 
-  const longPressEvent = useLongPress(() => toggleItemSelect(folder.id), () => setPath((path: string) => path + `/${folder.name}`))
+  const clickFolder = () => {
+    if (selectedItems.length > 0) toggleItemSelect(folder.id)
+    else setPath((path: string) => path + `/${folder.name}`)
+  }
+
+  const longPressEvent = useLongPress(() => toggleItemSelect(folder.id), clickFolder)
 
   return (
     <div className={folder.selected ? 'selected' : ''} ref={ref}>

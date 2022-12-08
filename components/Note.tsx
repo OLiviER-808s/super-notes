@@ -16,7 +16,7 @@ const Note = ({ note }: any) => {
   const { hovered, ref } = useHover()
   const { width } = useViewportSize()
 
-  const { notes, deselectItem, toggleItemSelect } = useItems()
+  const { selectedItems, deselectItem, toggleItemSelect } = useItems()
 
   const [ audio, setAudio ] = useAudio()
   const [ playing, setPlaying ] = useState(false)
@@ -24,7 +24,7 @@ const Note = ({ note }: any) => {
   const textColor = note.color ? contrast(note.color, 'rgba(192, 193, 197)') > contrast(note.color, 'rgba(0, 0, 0)') ? 'rgba(192, 193, 197)' : 'rgba(0, 0, 0)' : null
 
   const clickNote = () => {
-    if (notes.filter((n: NoteModel) => n.selected).length === 0) setOpened(true)
+    if (selectedItems.length === 0) setOpened(true)
     toggleItemSelect(note.id)
   }
 
