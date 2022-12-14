@@ -46,15 +46,24 @@ const AudioPlayer = ({ src }) => {
 
   useEffect(() => {
     if (audio) {
-      audio.addEventListener('loadeddata', () => {
-        audio.play()
+      if (audio.readyState === 4 && !timer) {
+        timer = setInterval(() => {
+          setAutoSliderVal((audio.currentTime / audio.duration) * 100)
+        }, 1000)
 
-        if (!timer) {
-          timer = setInterval(() => {
-            setAutoSliderVal((audio.currentTime / audio.duration) * 100)
-          }, 1000)
-        }
-      }, 500)
+        setPlaying(!audio.paused)
+      }
+      else {
+        audio.addEventListener('loadeddata', () => {
+          audio.play()
+  
+          if (!timer) {
+            timer = setInterval(() => {
+              setAutoSliderVal((audio.currentTime / audio.duration) * 100)
+            }, 1000)
+          }
+        }, 500)
+      }
 
       audio.addEventListener('play', () => setPlaying(true))
       audio.addEventListener('pause', () => setPlaying(false))
