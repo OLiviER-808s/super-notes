@@ -8,13 +8,21 @@ export const useAudio = () => {
   const setAudio = useContext(SetAudioContext)
 
   const switchTrack = (src: string) => {
-    if (audio) {
+    if (audio && src) {
       audio.pause()
       audio.src = src
       audio.currentTime = 0
     }
-    else if (src) setAudio(new Audio(src))
-    else setAudio(null)
+    else if (audio) {
+      audio.pause()
+      audio.currentTime = 0
+    }
+    else if (src) {
+      setAudio(new Audio(src))
+    }
+    else {
+      setAudio(null)
+    }
   }
 
   return [ audio, switchTrack ]

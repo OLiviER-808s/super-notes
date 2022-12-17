@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Paper, Slider, Title } from "@mantine/core"
-import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat } from "@tabler/icons"
+import { IconPlayerPause, IconPlayerPlay, IconPlayerTrackNext, IconPlayerTrackPrev, IconRepeat, IconX } from "@tabler/icons"
 import { useEffect, useState } from "react"
 import { useAudio } from "../providers/AudioProvider"
 import { useItems } from "../providers/ItemProvider"
@@ -11,6 +11,7 @@ const AudioBar = () => {
   const idx = notesWithAudio.indexOf(note)
 
   const [audio, setAudio] = useAudio()
+  const [open, setOpen] = useState(false)
 
   const [playing, setPlaying] = useState(false)
 
@@ -67,10 +68,16 @@ const AudioBar = () => {
     }
   }
 
+  const closeAudio = () => {
+    setOpen(false)
+    setAudio(null)
+  }
+
   useEffect(() => {
     if (audio) {
       audio.addEventListener('loadeddata', () => {
         setNote(notesWithAudio.filter(n => n.audioRef === audio.src)[0])
+        setOpen(true)
 
         audio.loop = loop
         audio.play()
@@ -82,12 +89,15 @@ const AudioBar = () => {
         }
       }, 500)
 
-      audio.addEventListener('play', () => setPlaying(true))
+      audio.addEventListener('play', () => {
+        setOpen(true)
+        setPlaying(true)
+      })
       audio.addEventListener('pause', () => setPlaying(false))
     }
   }, [audio])
 
-  return audio && (
+  return audio && open && (
     <div className="footer">
       <Paper p="md" withBorder style={{'backgroundColor': note?.color || null}}>
         <Title order={4}>{ note?.title }</Title>
@@ -109,9 +119,15 @@ const AudioBar = () => {
             </ActionIcon>
           </Group>
 
-          <ActionIcon color={loop ? 'blue' : 'gray'} variant={loop ? 'light' : 'subtle'} onClick={toggleLoop}>
-            <IconRepeat />
-          </ActionIcon>
+          <Group position="center">
+            <ActionIcon color={loop ? 'blue' : 'gray'} variant={loop ? 'light' : 'subtle'} onClick={toggleLoop}>
+              <IconRepeat />
+            </ActionIcon>
+
+            <ActionIcon variant="subtle" onClick={closeAudio}>
+              <IconX />
+            </ActionIcon>
+          </Group>
         </Group>
 
         <div>
