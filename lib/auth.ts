@@ -1,14 +1,17 @@
-import { deleteDoc, doc, setDoc, writeBatch } from "firebase/firestore"
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage"
+import { doc, setDoc, Timestamp, writeBatch } from "firebase/firestore"
+import { deleteObject, getDownloadURL, ref, uploadBytes } from "firebase/storage"
 import NoteModel from "../models/Note.model"
-import { db, storage, timestamp } from "./firebase"
+import { db, storage } from "./firebase"
 
 export const deleteItems = async (items) => {
   const batch = writeBatch(db)
 
   items.forEach(item => {
-    const ref = doc(db, `${item.type}s/${item.id}`)
-    batch.delete(ref)
+    if (item.imagePath) deleteObject(ref(storage, item.imagePath))
+    if (item.audioPath) deleteObject(ref(storage, item.audioPath))
+
+    const docRef = doc(db, `${item.type}s/${item.id}`)
+    batch.delete(docRef)
   })
 
   await batch.commit()
@@ -54,14 +57,8 @@ export const editNote = async (note: NoteModel) => {
   await setDoc(ref, note)
 }
 
-export const deleteFolder = async (id: string) => {
-  const ref = doc(db, `folders/${id}`)
-
-  await deleteDoc(ref)
-}
-
 export const uploadImage = async (file: File) => {
-  const imagePath = `images/${timestamp()}_${file.name}`
+  const imagePath = `images/${Timestamp.now().seconds}_${file.name}`
 
   const r = ref(storage, imagePath)
   await uploadBytes(r, file)
@@ -72,7 +69,7 @@ export const uploadImage = async (file: File) => {
 }
 
 export const uploadAudio = async (file: File) => {
-  const audioPath = `audio/${timestamp()}_${file.name}`
+  const audioPath = `audio/${Timestamp.now().seconds}_${file.name}`
 
   const r = ref(storage, audioPath)
   await uploadBytes(r, file)
